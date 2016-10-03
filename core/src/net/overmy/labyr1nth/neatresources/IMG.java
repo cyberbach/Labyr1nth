@@ -20,7 +20,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public enum IMG {
 
-    GRADIENT( "grad" );
+    GRADIENT( "grad" ),
+
+    KEY1( "key1" ),
+    KEY2( "key2" ),
+    KEY3( "key3" ),
+    KEY4( "key4" ),
+    KEY5( "key5" ),
+    KEYS( "keys" ),
+
+    DOOR1( "door1" ),
+    DOOR2( "door2" ),
+    DOOR3( "door3" ),
+
+    SECRET1( "secret1" ),
+    SECRET2( "secret2" ),
+    SECRET3( "secret3" ),
+    SECRET4( "secret4" ),
+    SECRET5( "secret5" ),
+    SECRET6( "secret6" ),
+    ;
 
     private final String name;
 

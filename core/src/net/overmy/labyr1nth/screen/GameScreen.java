@@ -49,7 +49,9 @@ public class GameScreen extends Base2DScreen {
     private Sprite                  sprite             = null;
     private Sprite                  gradientSprite     = null;
     private GridPoint2              workPosition       = null;
-    private ArrayList< GridPoint2 > keyPosition        = null;
+    private ArrayList< GridPoint2 > keyPositions       = null;
+    private ArrayList< Integer >    keyFaces           = null;
+    private int                     doorFace           = 0;
     private GridPoint2              exitPosition       = null;
     private Color                   currentLevelColor  = null;
     private DoubleFloatAnimator     workPositionOffset = null;
@@ -58,8 +60,10 @@ public class GameScreen extends Base2DScreen {
     private float                   textAnimationTime  = 10.0f;
     private boolean                 textAnimationStop  = false;
     private boolean                 gameOverFlag       = false;
-    private GlyphLayout textLayout;
+    private GlyphLayout introWordsBeforeGameLayout;
     private GlyphLayout gameoverLayout;
+
+    private ArrayList< Sprite > faceSprites = null;
 
     public GameScreen( final MyGdxGame game ) {
         super( game );
@@ -119,7 +123,8 @@ public class GameScreen extends Base2DScreen {
         }
 
         workPosition = new GridPoint2();
-        keyPosition = new ArrayList< GridPoint2 >();
+        keyPositions = new ArrayList< GridPoint2 >();
+        keyFaces = new ArrayList< Integer >();
         exitPosition = new GridPoint2();
 
         lab = LabyrinthGen.gen( labyrinthWidth, labyrinthHeight, 5 + Core.level / 10 );
@@ -141,10 +146,20 @@ public class GameScreen extends Base2DScreen {
         for ( int i = 0; i < keysCount; i++ ) {
             if ( points.size() < 2 ) { break; }
             int randomPosition2 = MathUtils.random.nextInt( points.size() );
-            keyPosition.add( new GridPoint2( points.get( randomPosition2 ).x, points.get(
+            keyPositions.add( new GridPoint2( points.get( randomPosition2 ).x, points.get(
                     randomPosition2 ).y )
-                           );
+                            );
             points.remove( randomPosition2 );
+
+            int nOfFace = MathUtils.random.nextInt( 4 );
+            keyFaces.add( nOfFace );
+        }
+
+        faceSprites = new ArrayList< Sprite >( 5 );
+        for ( int i = 0; i < 5; i++ ) {
+            int    nOfSprite = IMG.KEY1.ordinal() + MathUtils.random( 4 );
+            Sprite spr       = IMG.values()[ nOfSprite ].createSprite();
+            faceSprites.add( spr );
         }
 
         int randomPosition3 = MathUtils.random.nextInt( points.size() );
@@ -164,12 +179,12 @@ public class GameScreen extends Base2DScreen {
 
         sprite = IMG.generateSquareSprite( squareSize, squareSize );
 
-        String text        = Text.values()[ 1 + Core.level ].get();
+        String text        = Text.values()[ Core.level ].get();
         int    nOfColor    = MathUtils.random.nextInt( totalColors );
         Color  textColor   = GameColor.getByNumber( nOfColor );
         float  layoutWidth = Core.WIDTH * 0.8f;
-        textLayout = new GlyphLayout( Fonts.GUI_TEXT1.get(), text, textColor,
-                                      layoutWidth, Align.left, true );
+        introWordsBeforeGameLayout = new GlyphLayout( Fonts.GUI_TEXT1.get(), text, textColor,
+                                                      layoutWidth, Align.left, true );
 
         gameoverLayout = new GlyphLayout( Fonts.GUI_TEXT1.get(),
                                           Text.GAMEOVER.get(),
@@ -177,6 +192,8 @@ public class GameScreen extends Base2DScreen {
                                           Core.WIDTH * 0.9f, Align.left, true );
         textAnimator = new FloatAnimator();
         textAnimator.setFrom( 1 ).setTo( 0 );
+
+        doorFace = MathUtils.random( 2 );
 
         Gdx.app.debug( className + " Core.level " + Core.level, "" + s );
     }
@@ -273,15 +290,18 @@ public class GameScreen extends Base2DScreen {
             textAnimator.fromCurrent().setTo( 1 ).resetTime();
         }
 
-        for ( GridPoint2 kp : keyPosition ) {
+        for ( int i = 0; i < keyPositions.size(); i++ ) {
+            GridPoint2 kp = keyPositions.get( i );
             if ( workPosition.equals( kp ) ) {
                 if ( MathUtils.random.nextBoolean() ) { SoundTrack.KEY1.play(); }
                 else { SoundTrack.KEY2.play(); }
                 keysCount--;
-                keyPosition.remove( kp );
+                keyPositions.remove( i );
+                keyFaces.remove( i );
                 break;
             }
         }
+
         if ( !exit && keysCount == 0 && workPosition.equals( exitPosition ) ) { exit = true; }
 
         if ( exit ) {
@@ -338,32 +358,40 @@ public class GameScreen extends Base2DScreen {
 
         if ( !gameOverFlag ) {
             //if ( !key ) {
-            for ( GridPoint2 kp : keyPosition ) {
+
+            for ( int i = 0; i < keyPositions.size(); i++ ) {
+                GridPoint2 kp = keyPositions.get( i );
+
+                float keyX = widthOffset + kp.x * squareSize -
+                             (workPosition.x + workPositionOffset.currentX) *
+                             squareSize + squareSize / 4;
+
+                float keyY = heightOffset + kp.y * squareSize -
+                             (workPosition.y + workPositionOffset.currentY) * squareSize +
+                             squareSize / 4;
+
                 batch.setColor( Color.CORAL );
-                Fonts.TABLE_TEXT.get().draw(
-                        batch,
-                        Text.KEY.get(),
-                        widthOffset + kp.x * squareSize -
-                        (workPosition.x + workPositionOffset.currentX) * squareSize
-                        + squareSize / 2,
-                        heightOffset + kp.y * squareSize -
-                        (workPosition.y + workPositionOffset.currentY) * squareSize
-                        + squareSize / 2 );
+
+                Sprite spr = faceSprites.get( keyFaces.get( i ) );
+                batch.draw( spr, keyX, keyY, squareSize / 2, squareSize / 2 );
             }
             //}
         }
 
         if ( !gameOverFlag ) {
             if ( !exit ) {
-                Fonts.TABLE_TEXT.get().draw(
-                        batch,
-                        Text.EXIT.get(),
-                        widthOffset + exitPosition.x * squareSize -
-                        (workPosition.x + workPositionOffset.currentX) * squareSize
-                        + squareSize / 2,
-                        heightOffset + exitPosition.y * squareSize -
-                        (workPosition.y + workPositionOffset.currentY) * squareSize
-                        + squareSize / 2 );
+                float doorX = widthOffset + exitPosition.x * squareSize -
+                              (workPosition.x + workPositionOffset.currentX) * squareSize
+                              + squareSize / 4;
+                float doorY = heightOffset + exitPosition.y * squareSize -
+                              (workPosition.y + workPositionOffset.currentY) * squareSize
+                              + squareSize / 4;
+
+                int    offsetDoorIMG = IMG.DOOR1.ordinal() + doorFace;
+                Sprite spr           = IMG.values()[ offsetDoorIMG ].createSprite();
+                batch.draw( spr, doorX, doorY, squareSize / 2, squareSize / 2 );
+
+                //Fonts.TABLE_TEXT.get().draw( batch, Text.EXIT.get(),doorX ,doorY );
             }
         }
 
@@ -411,9 +439,9 @@ public class GameScreen extends Base2DScreen {
         }
 
         if ( !gameOverFlag ) {
-            Fonts.GUI_TEXT1.get().draw( batch, textLayout,
-                                        Core.WIDTH_HALF - textLayout.width / 2,
-                                        Core.HEIGHT_HALF + textLayout.height / 2 -
+            Fonts.GUI_TEXT1.get().draw( batch, introWordsBeforeGameLayout,
+                                        Core.WIDTH_HALF - introWordsBeforeGameLayout.width / 2,
+                                        Core.HEIGHT_HALF + introWordsBeforeGameLayout.height / 2 -
                                         textAnimator.current * Core.HEIGHT );
         }
         if ( gameOverFlag ) {

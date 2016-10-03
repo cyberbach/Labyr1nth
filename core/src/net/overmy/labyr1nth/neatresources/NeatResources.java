@@ -26,7 +26,7 @@ public final class NeatResources {
 
     final private static String             className  = NeatResources.class.getSimpleName();
     private final static FileHandleResolver resolver   = new InternalFileHandleResolver();
-    private final static String             ATLAS_PATH = "pack";
+    private final static String             ATLAS_PATH = "pack.atlas";
     private static       AssetManager       manager    = null;
     private static       TextureAtlas       atlas      = null;
 

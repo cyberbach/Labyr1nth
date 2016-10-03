@@ -13,9 +13,6 @@ import com.badlogic.gdx.Gdx;
 
 public enum Text {
 
-    TITLE( "labyrinth", "Лабиринт" ),
-    START_GAME( "Start New", "Начать новую игру" ),
-    CONTINUE_GAME( "Continue", "Продолжить" ),
     LEVEL0( "1. Find the key\n2. Find the EXIT\nSwipe to move.\nTap to pick the key.",
             "1. Найди ключ\n" +
             "2. Найди выход\n" +
@@ -123,6 +120,9 @@ public enum Text {
              "Как много дел считались невозможными, пока они не были осуществлены." ),
     GAMEOVER( "Thank you for playing!\n\nYou reach all the levels.",
               "Спасибо за игру!\n\nВы прошли все уровни." ),
+    TITLE( "labyrinth", "Лабиринт" ),
+    START_GAME( "Start New", "Начать новую игру" ),
+    CONTINUE_GAME( "Continue", "Продолжить" ),
     KEY( "key", "ключ" ),
     KEY_FOUND( "Keys are founded!", "Ключи найдены!" ),
     EXIT( "exit", "выход" ),
