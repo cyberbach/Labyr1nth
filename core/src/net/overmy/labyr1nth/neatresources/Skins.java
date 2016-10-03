@@ -39,15 +39,15 @@ public enum Skins {
         Skins.NUMBER.mySkin.add( "default", labelStyle );
 
         labelStyle = new LabelStyle();
-        labelStyle.font = Fonts.TITLE.get();
+        labelStyle.font = Fonts.GUI_TEXT1.get();
         Skins.GUI_TEXT.mySkin.add( "default", labelStyle );
 
         labelStyle = new LabelStyle();
-        labelStyle.font = Fonts.GUI_TEXT.get();
+        labelStyle.font = Fonts.GUI_TEXT1.get();
         Skins.GUI_SCORE.mySkin.add( "default", labelStyle );
 
         TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.font = Fonts.GUI_TEXT.get();
+        textButtonStyle.font = Fonts.GUI_TEXT1.get();
 
         Pixmap pixmap = new Pixmap( 16, 16, Pixmap.Format.RGB888 );
         pixmap.setColor( GameColor.hexToColor( 0x1c1f27 ) );

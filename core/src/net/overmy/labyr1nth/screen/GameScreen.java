@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.Align;
 import net.overmy.labyr1nth.Core;
 import net.overmy.labyr1nth.MyGdxGame;
 import net.overmy.labyr1nth.MyGdxGame.SCREEN;
-import net.overmy.labyr1nth.utils.AtmoManager;
 import net.overmy.labyr1nth.logic.LabyrinthGen;
 import net.overmy.labyr1nth.neatresources.Fonts;
 import net.overmy.labyr1nth.neatresources.GameColor;
@@ -27,6 +26,7 @@ import net.overmy.labyr1nth.neatresources.IMG;
 import net.overmy.labyr1nth.neatresources.Settings;
 import net.overmy.labyr1nth.neatresources.SoundTrack;
 import net.overmy.labyr1nth.neatresources.Text;
+import net.overmy.labyr1nth.utils.AtmoManager;
 import net.overmy.labyr1nth.utils.DoubleFloatAnimator;
 import net.overmy.labyr1nth.utils.FloatAnimator;
 
@@ -42,7 +42,8 @@ public class GameScreen extends Base2DScreen {
     private int                     squareSize         = 0;
     private float                   heightOffset       = 0;
     private float                   widthOffset        = 0;
-    private boolean                 key                = false;
+    //private boolean                 key                = false;
+    private int                     keysCount          = 0;
     private boolean                 exit               = false;
     private boolean[][]             lab                = null;
     private Sprite                  sprite             = null;
@@ -77,8 +78,9 @@ public class GameScreen extends Base2DScreen {
 
         gradientSprite = IMG.GRADIENT.createSprite();
 
-        currentLevelColor = GameColor.getByNumber( MathUtils.random.nextInt( GameColor.values()
-                                                                                     .length ) );
+        int totalColors = GameColor.values().length;
+        int rndColor    = 1 + MathUtils.random.nextInt( totalColors - 1 );
+        currentLevelColor = GameColor.getByNumber( rndColor );
 
         int labyrinthWidth  = 0;
         int labyrinthHeight = 0;
@@ -112,8 +114,8 @@ public class GameScreen extends Base2DScreen {
             labyrinthHeight = 16;
         }
         else {
-            labyrinthWidth = 14;
-            labyrinthHeight = 14;
+            labyrinthWidth = 8;
+            labyrinthHeight = 8;
         }
 
         workPosition = new GridPoint2();
@@ -134,7 +136,7 @@ public class GameScreen extends Base2DScreen {
         workPosition.set( points.get( randomPosition1 ).x, points.get( randomPosition1 ).y );
         points.remove( randomPosition1 );
 
-        int keysCount = 1 + MathUtils.random( 4 );
+        keysCount = 1 + MathUtils.random( 4 );
 
         for ( int i = 0; i < keysCount; i++ ) {
             if ( points.size() < 2 ) { break; }
@@ -162,13 +164,14 @@ public class GameScreen extends Base2DScreen {
 
         sprite = IMG.generateSquareSprite( squareSize, squareSize );
 
-        textLayout = new GlyphLayout( Fonts.LEVEL_INTRO_TEXT.get(),
-                                      Text.values()[ 1 + Core.level ].get(),
-                                      GameColor.getByNumber(
-                                              MathUtils.random.nextInt(
-                                                      GameColor.values().length ) ),
-                                      Core.WIDTH * 0.8f, Align.left, true );
-        gameoverLayout = new GlyphLayout( Fonts.LEVEL_INTRO_TEXT.get(),
+        String text        = Text.values()[ 1 + Core.level ].get();
+        int    nOfColor    = MathUtils.random.nextInt( totalColors );
+        Color  textColor   = GameColor.getByNumber( nOfColor );
+        float  layoutWidth = Core.WIDTH * 0.8f;
+        textLayout = new GlyphLayout( Fonts.GUI_TEXT1.get(), text, textColor,
+                                      layoutWidth, Align.left, true );
+
+        gameoverLayout = new GlyphLayout( Fonts.GUI_TEXT1.get(),
                                           Text.GAMEOVER.get(),
                                           Color.YELLOW,
                                           Core.WIDTH * 0.9f, Align.left, true );
@@ -270,12 +273,16 @@ public class GameScreen extends Base2DScreen {
             textAnimator.fromCurrent().setTo( 1 ).resetTime();
         }
 
-        if ( !key && workPosition.equals( keyPosition ) ) {
-            if ( MathUtils.random.nextBoolean() ) { SoundTrack.KEY1.play(); }
-            else { SoundTrack.KEY2.play(); }
-            key = true;
+        for ( GridPoint2 kp : keyPosition ) {
+            if ( workPosition.equals( kp ) ) {
+                if ( MathUtils.random.nextBoolean() ) { SoundTrack.KEY1.play(); }
+                else { SoundTrack.KEY2.play(); }
+                keysCount--;
+                keyPosition.remove( kp );
+                break;
+            }
         }
-        if ( !exit && key && workPosition.equals( exitPosition ) ) { exit = true; }
+        if ( !exit && keysCount == 0 && workPosition.equals( exitPosition ) ) { exit = true; }
 
         if ( exit ) {
             switch ( MathUtils.random.nextInt( 2 ) ) {
@@ -330,25 +337,25 @@ public class GameScreen extends Base2DScreen {
         }
 
         if ( !gameOverFlag ) {
-            if ( !key ) {
-                for(GridPoint2 kp : keyPosition) {
-                    batch.setColor( Color.CORAL );
-                    Fonts.GUI_TEXT.get().draw(
-                            batch,
-                            Text.KEY.get(),
-                            widthOffset + kp.x * squareSize -
-                            (workPosition.x + workPositionOffset.currentX) * squareSize
-                            + squareSize / 2,
-                            heightOffset + kp.y * squareSize -
-                            (workPosition.y + workPositionOffset.currentY) * squareSize
-                            + squareSize / 2 );
-                }
+            //if ( !key ) {
+            for ( GridPoint2 kp : keyPosition ) {
+                batch.setColor( Color.CORAL );
+                Fonts.TABLE_TEXT.get().draw(
+                        batch,
+                        Text.KEY.get(),
+                        widthOffset + kp.x * squareSize -
+                        (workPosition.x + workPositionOffset.currentX) * squareSize
+                        + squareSize / 2,
+                        heightOffset + kp.y * squareSize -
+                        (workPosition.y + workPositionOffset.currentY) * squareSize
+                        + squareSize / 2 );
             }
+            //}
         }
 
         if ( !gameOverFlag ) {
             if ( !exit ) {
-                Fonts.GUI_TEXT.get().draw(
+                Fonts.TABLE_TEXT.get().draw(
                         batch,
                         Text.EXIT.get(),
                         widthOffset + exitPosition.x * squareSize -
@@ -377,17 +384,17 @@ public class GameScreen extends Base2DScreen {
                     Core.WIDTH, Core.HEIGHT / 5, 1, 1, -90 );
 
         if ( !gameOverFlag ) {
-            Fonts.GUI_TEXT.get().draw(
+            Fonts.GUI_TEXT2.get().draw(
                     batch,
                     Text.LEVEL.get() + (Core.level + 1),
                     Core.WIDTH * 0.05f + Core.WIDTH * (1 - transition.current),
                     Core.HEIGHT * 0.9f
-                                     );
+                                      );
         }
 
         if ( !gameOverFlag ) {
-            if ( key ) {
-                Fonts.GUI_TEXT.get().draw(
+            if ( keysCount == 0 ) {
+                Fonts.GUI_TEXT2.get().draw(
                         batch,
                         Text.KEY_FOUND.get(),
                         Core.WIDTH * 0.05f + Core.WIDTH * (1 - transition.current),
@@ -396,7 +403,7 @@ public class GameScreen extends Base2DScreen {
         }
 
         if ( !gameOverFlag ) {
-            Fonts.GUI_TEXT.get().draw(
+            Fonts.GUI_TEXT2.get().draw(
                     batch,
                     Text.TIME.get() + (int) time,
                     Core.WIDTH * 0.05f + Core.WIDTH * (1 - transition.current),
@@ -404,16 +411,16 @@ public class GameScreen extends Base2DScreen {
         }
 
         if ( !gameOverFlag ) {
-            Fonts.LEVEL_INTRO_TEXT.get().draw( batch, textLayout,
-                                               Core.WIDTH_HALF - textLayout.width / 2,
-                                               Core.HEIGHT_HALF + textLayout.height / 2 -
-                                               textAnimator.current * Core.HEIGHT );
+            Fonts.GUI_TEXT1.get().draw( batch, textLayout,
+                                        Core.WIDTH_HALF - textLayout.width / 2,
+                                        Core.HEIGHT_HALF + textLayout.height / 2 -
+                                        textAnimator.current * Core.HEIGHT );
         }
         if ( gameOverFlag ) {
-            Fonts.LEVEL_INTRO_TEXT.get().draw( batch, gameoverLayout,
-                                               Core.WIDTH_HALF - gameoverLayout.width / 2,
-                                               Core.HEIGHT_HALF + gameoverLayout.height / 2 -
-                                               textAnimator.current * Core.HEIGHT );
+            Fonts.GUI_TEXT1.get().draw( batch, gameoverLayout,
+                                        Core.WIDTH_HALF - gameoverLayout.width / 2,
+                                        Core.HEIGHT_HALF + gameoverLayout.height / 2 -
+                                        textAnimator.current * Core.HEIGHT );
         }
 
         batch.end();

@@ -26,7 +26,7 @@ public class MyGdxGame extends Game {
     public void create() {
         Gdx.app.setLogLevel( Application.LOG_DEBUG );
         //Gdx.app.setLogLevel( Application.LOG_NONE );
-        Settings.load();
+        Core.loadSettings();
         NeatResources.load();
         switchTo( SCREEN.LOADING );
     }
@@ -52,7 +52,7 @@ public class MyGdxGame extends Game {
                 break;
 
             case EXIT:
-                Settings.save();
+                Core.saveSettings();
                 NeatResources.unload();
                 AtmoManager.dispose();
                 Gdx.app.exit();

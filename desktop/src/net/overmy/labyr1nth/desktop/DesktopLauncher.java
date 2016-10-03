@@ -8,6 +8,7 @@ public class DesktopLauncher {
 
 	static final String     appName      = DesktopLauncher.class.getPackage().getName();
 	// change this
+	// TODO test on square
 	static       SCREEN_CFG screenConfig = SCREEN_CFG.DEFAULT;
 
 	public static void main( String[] arg ) {

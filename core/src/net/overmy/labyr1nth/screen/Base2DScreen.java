@@ -205,7 +205,7 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
     public void backButton() { }
 
-    private class MyKeysProcessor implements InputProcessor {
+    protected class MyKeysProcessor implements InputProcessor {
 
         @Override
         public boolean keyDown( int keycode ) {

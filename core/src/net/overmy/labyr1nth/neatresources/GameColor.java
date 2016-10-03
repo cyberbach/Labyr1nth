@@ -72,10 +72,7 @@ public enum GameColor {
     THEME91( 0x703030 ),
     THEME94( 0x7E827A ),
     THEME92( 0xE3CDA4 ),
-    THEME93( 0xC77966 ),
-
-    WHITEGL( 1, 1, 1, 0.4f ),
-    BLACKGL( 0, 0, 0, 0.2f ),;
+    THEME93( 0xC77966 ),;
 
     private final Color color;
 

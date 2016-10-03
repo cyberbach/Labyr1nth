@@ -8,29 +8,36 @@
 
 package net.overmy.labyr1nth.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import net.overmy.labyr1nth.Core;
 import net.overmy.labyr1nth.MyGdxGame;
 import net.overmy.labyr1nth.MyGdxGame.SCREEN;
-import net.overmy.labyr1nth.neatresources.SoundTrack;
-import net.overmy.labyr1nth.utils.AtmoManager;
+import net.overmy.labyr1nth.neatresources.Fonts;
 import net.overmy.labyr1nth.neatresources.MusicTrack;
 import net.overmy.labyr1nth.neatresources.Skins;
+import net.overmy.labyr1nth.neatresources.SoundTrack;
 import net.overmy.labyr1nth.neatresources.Text;
+import net.overmy.labyr1nth.utils.AtmoManager;
 
 
 public class MenuScreen extends Base2DScreen {
 
     final float FADE_TIME = 0.35f;
-    Label label = null;
-    Label startButton = null;
-    Label continueButton = null;
+    Label label              = null;
+    Label startNewGameButton = null;
+    Label continueButton     = null;
 
     Table table = null;
     Stage stage = null;
@@ -41,40 +48,78 @@ public class MenuScreen extends Base2DScreen {
 
     @Override
     public void show() {
-        super.show();
 
         Core.music = false;
         Core.sound = false;
 
         MusicTrack.TRACK.play();
 
-        startButton = new Label( Text.START_GAME.get(), Skins.TITLE.get() );
-        continueButton = new Label( Text.START_GAME.get(), Skins.TITLE.get() );
+        startNewGameButton = new Label( Text.START_GAME.get(), Fonts.GUI_TEXT1.getStyle() );
+        continueButton = new Label( Text.CONTINUE_GAME.get(), Fonts.GUI_TEXT1.getStyle() );
 
         label = new Label( Text.TITLE.get(), Skins.TITLE.get() );
         label.setAlignment( Align.center );
         label.setWrap( true );
 
         table = new Table();
+        table.setDebug( true );
         table.setFillParent( true );
 
-        table.add( label ).width( Core.WIDTH * 0.9f );
-        table.add( startButton ).width( Core.WIDTH * 0.9f );
-        table.add( continueButton ).width( Core.WIDTH * 0.9f );
+        if ( Core.level > 0 ) {
+            table.add( label ).width( Core.WIDTH ).colspan( 2 );
+        }
+        else {
+            table.add( label ).width( Core.WIDTH );
+        }
+
+        table.row();
+        table.add( startNewGameButton );
+
+        if ( Core.level > 0 ) { table.add( continueButton ); }
 
         table.addAction(
                 Actions.sequence( Actions.moveTo( Core.WIDTH, 0, 0 ),
                                   Actions.moveTo( 0, 0, FADE_TIME ) ) );
         stage = new Stage();
         stage.addActor( table );
+
+        startNewGameButton.addListener( new ClickListener() {
+            @Override
+            public void clicked( InputEvent event, float x, float y ) {
+                Core.level = 0;
+                table.addAction( Actions.moveTo( -Core.WIDTH, 0, FADE_TIME ) );
+                SoundTrack.START.play();
+                switchTo( SCREEN.GAME );
+            }
+        } );
+
+        if ( Core.level > 0 ) {
+            continueButton.addListener( new ClickListener() {
+                @Override
+                public void clicked( InputEvent event, float x, float y ) {
+                    table.addAction( Actions.moveTo( -Core.WIDTH, 0, FADE_TIME ) );
+                    SoundTrack.START.play();
+                    switchTo( SCREEN.GAME );
+                }
+            } );
+        }
+
+        InputProcessor keysProcessor     = new MyKeysProcessor();
+        InputProcessor gesturesProcessor = new GestureDetector( this );
+        InputProcessor processor = new InputMultiplexer( stage, keysProcessor,
+                                                         gesturesProcessor );
+        Gdx.input.setInputProcessor( processor );
+        Gdx.input.setCatchBackKey( true );
+        Gdx.input.setCatchMenuKey( true );
+        Gdx.app.debug( "overrided", "show" );
     }
 
     @Override
     public boolean tap( float x, float y, int count, int button ) {
-
+/*
         table.addAction( Actions.moveTo( -Core.WIDTH, 0, FADE_TIME ) );
         SoundTrack.START.play();
-        switchTo( SCREEN.GAME );
+        switchTo( SCREEN.GAME );*/
 
         return false;
     }
@@ -83,6 +128,7 @@ public class MenuScreen extends Base2DScreen {
     public void update( float delta ) {
         super.update( delta );
         AtmoManager.update( delta );
+        stage.act( delta );
     }
 
     @Override
@@ -92,7 +138,6 @@ public class MenuScreen extends Base2DScreen {
         AtmoManager.render( batch, Color.WHITE );
 
         batch.end();
-
 
         stage.draw();
     }

@@ -124,7 +124,7 @@ public enum Text {
     GAMEOVER( "Thank you for playing!\n\nYou reach all the levels.",
               "Спасибо за игру!\n\nВы прошли все уровни." ),
     KEY( "key", "ключ" ),
-    KEY_FOUND( "Key found!", "Ключ найден!" ),
+    KEY_FOUND( "Keys are founded!", "Ключи найдены!" ),
     EXIT( "exit", "выход" ),
     TIME( "time ", "время " ),
     LEVEL( "Level ", "Уровень " ),;

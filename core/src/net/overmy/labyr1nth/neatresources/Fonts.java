@@ -6,14 +6,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.StringBuilder;
 
 
 public enum Fonts {
 
-    TITLE( "k.otf", 80, 2, Color.WHITE, Color.DARK_GRAY ),
-    GUI_TEXT( "k.otf", 44, 1, Color.WHITE, Color.GRAY ),
-    LEVEL_INTRO_TEXT( "k.otf", 38, 1.4f, Color.WHITE, Color.GRAY ),;
+    TITLE( "k.otf", 80, 0, Color.WHITE ),
+    GUI_TEXT1( "k.otf", 44, 2, Color.WHITE, Color.DARK_GRAY ),
+    GUI_TEXT2( "k.otf", 32, 2, Color.WHITE, Color.BLACK ),
+    TABLE_TEXT( "k.otf", 32, 1, Color.WHITE, Color.BLACK ),
+    ;
 
+    public static final String extention = ".ttf";
     private final String     path;
     private final int        size;
     private final float      borderSize;
@@ -21,17 +26,15 @@ public enum Fonts {
     private final Color      borderColor;
     private       BitmapFont font;
 
-    private Fonts( final String path, final int size, final float borderSize ) {
-        this( path, size, borderSize, Color.WHITE, Color.BLACK );
+    private Fonts( String path, int size, float borderSize ) {
+        this( path, size, borderSize, Color.WHITE, Color.DARK_GRAY );
     }
 
-    private Fonts( final String path, final int size, final float borderSize, final Color color ) {
-        this( path, size, borderSize, color, Color.BLACK );
+    private Fonts( String path, int size, float borderSize, Color color ) {
+        this( path, size, borderSize, color, Color.DARK_GRAY );
     }
 
-    private Fonts( final String path, final int size, final float borderSize, final Color color,
-                   final Color borderColor ) {
-
+    private Fonts( String path, int size, float borderSize, Color color, Color borderColor ) {
         this.path = path;
         this.size = size;
         this.borderSize = borderSize;
@@ -42,8 +45,8 @@ public enum Fonts {
     /**
      * build all fonts
      */
-    public static void build( final AssetManager manager ) {
-        final float scale = 480.0f / Gdx.graphics.getHeight();
+    public static void build( AssetManager manager ) {
+        float scale = Gdx.graphics.getHeight() / 480.0f;
 
         for ( int i = 0; i < Fonts.values().length; i++ ) {
             FreeTypeFontGenerator myFontGenerator;
@@ -62,42 +65,48 @@ public enum Fonts {
     /**
      * load all font-files
      */
-    public static void load( final AssetManager manager ) {
-
+    public static void load( AssetManager manager ) {
         for ( int i = 0; i < Fonts.values().length; i++ ) {
-            if ( !manager.isLoaded( Fonts.values()[ i ].path ) )
+            if ( !manager.isLoaded( Fonts.values()[ i ].path ) ) {
                 manager.load( Fonts.values()[ i ].path, FreeTypeFontGenerator.class );
+            }
         }
     }
 
     /**
      * dispose all fonts & unload all font-files
      */
-    public static void unload( final AssetManager manager ) {
-
+    public static void unload( AssetManager manager ) {
         for ( int i = 0; i < Fonts.values().length; i++ ) {
             if ( Fonts.values()[ i ].font != null ) {
                 Fonts.values()[ i ].font.dispose();
                 Fonts.values()[ i ].font = null;
-                if ( manager.isLoaded( Fonts.values()[ i ].path ) )
+                if ( manager.isLoaded( Fonts.values()[ i ].path ) ) {
                     manager.unload( Fonts.values()[ i ].path );
+                }
             }
         }
     }
 
     private static String createChars() {
-        String fontChars = "";
+        StringBuilder fontChars = new StringBuilder();
 
-        for ( int i = 32; i < 127; i++ )
-            fontChars += (char) i;
+        for ( int i = 32; i < 127; i++ ) {
+            fontChars.append( (char) i );
+        }
 
-        for ( int i = 1024; i < 1104; i++ )
-            fontChars += (char) i;
+        for ( int i = 1024; i < 1104; i++ ) {
+            fontChars.append( (char) i );
+        }
 
-        return fontChars;
+        return fontChars.toString();
     }
 
     public BitmapFont get() {
         return font;
+    }
+
+    public Label.LabelStyle getStyle(){
+        return new Label.LabelStyle( this.get(), this.color );
     }
 }
