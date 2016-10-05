@@ -12,15 +12,11 @@ import net.overmy.labyr1nth.AdMob;
  */
 public class AdMobImpl implements AdMob {
 
-    final private String className = AdMob.class.getSimpleName();
+    private final String className = AdMob.class.getSimpleName();
 
     @Override
-    public void show() {
-        Gdx.app.debug( className, "show AD" );
-    }
+    public void show() { Gdx.app.debug( className, "show AD" ); }
 
     @Override
-    public void hide() {
-        Gdx.app.debug( className, "hide AD" );
-    }
+    public void hide() { Gdx.app.debug( className, "hide AD" ); }
 }

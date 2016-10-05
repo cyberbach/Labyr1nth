@@ -8,6 +8,7 @@
 
 package net.overmy.labyr1nth.neatresources;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +22,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public enum IMG {
 
     GRADIENT( "grad" ),
+    HAND( "hand" ),
+    SOUND_ON( "soundon" ),
+    SOUND_OFF( "soundoff" ),
+
+    CONTROLLER( "controller" ),
+    CONTROLLER_GRAY( "controllergrey" ),
+    ACHEIVE_ICON( "achieve" ),
+    LEADERBOARD_ICON( "leaderboards" ),
 
     KEY1( "key1" ),
     KEY2( "key2" ),
@@ -42,9 +51,24 @@ public enum IMG {
     ;
 
     private final String name;
+    private final static String             ATLAS_PATH = "pack.atlas";
+    private static       TextureAtlas       atlas      = null;
 
     private IMG( final String text ) {
         this.name = text;
+    }
+
+    public static void load( AssetManager manager ){
+        manager.load( ATLAS_PATH, TextureAtlas.class );
+    }
+
+    public static void build( AssetManager manager ) {
+        atlas = manager.get( ATLAS_PATH, TextureAtlas.class );
+    }
+
+    public static void unload( AssetManager manager ){
+        manager.unload( ATLAS_PATH );
+        atlas.dispose();
     }
 
     public static Sprite generateSquareSprite( final int x, final int y ) {
@@ -56,7 +80,7 @@ public enum IMG {
     }
 
     public TextureAtlas.AtlasRegion getRegion() {
-        return NeatResources.getAtlas().findRegion( this.name );
+        return atlas.findRegion( this.name );
     }
 
     public Image getImageActor( final float sizeX, final float sizeY ) {
@@ -68,14 +92,14 @@ public enum IMG {
     }
 
     public Sprite createSprite( final int x, final int y ) {
-        Sprite sprite = NeatResources.getAtlas().createSprite( this.name );
+        Sprite sprite = atlas.createSprite( this.name );
         sprite.setRegionWidth( x );
         sprite.setRegionHeight( y );
         return sprite;
     }
 
     public Sprite createSprite() {
-        return NeatResources.getAtlas().createSprite( this.name );
+        return atlas.createSprite( this.name );
     }
 
     public Drawable getDrawable() {

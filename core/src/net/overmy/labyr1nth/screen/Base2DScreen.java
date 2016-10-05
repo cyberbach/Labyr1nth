@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,13 +33,14 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
     private final String className = Base2DScreen.class.getSimpleName();
 
     protected MyGdxGame game;
-    protected MyGdxGame.SCREEN   nextScr         = null;
     protected SpriteBatch        batch           = null;
-    protected OrthographicCamera camera          = null;
-    protected   FloatAnimator      transition      = null;
+    private   FloatAnimator      transition      = null;
+    private   MyGdxGame.SCREEN   nextScr         = null;
+    private   OrthographicCamera camera          = null;
     private   Sprite             blackFullScreen = null;
     private   FPSLogger          fpsLogger       = null;
     private   boolean            skipRender      = false;
+    private   Color              bg              = GameColor.BG.get();
 
     public Base2DScreen( MyGdxGame game ) {
         this.game = game;
@@ -48,6 +50,7 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
         camera = new OrthographicCamera();
         camera.setToOrtho( false, Core.WIDTH, Core.HEIGHT );
         batch.setProjectionMatrix( camera.combined );
+
         transition = new FloatAnimator( 0, 1, Core.FADE );
         blackFullScreen = IMG.generateSquareSprite( Core.WIDTH, Core.HEIGHT );
 
@@ -58,9 +61,10 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
     @Override
     public void show() {
-        InputProcessor keysProcessor     = new MyKeysProcessor();
-        InputProcessor gesturesProcessor = new GestureDetector( this );
-        Gdx.input.setInputProcessor( new InputMultiplexer( keysProcessor, gesturesProcessor ) );
+        InputProcessor keys      = new MyKeysProcessor();
+        InputProcessor gestures  = new GestureDetector( this );
+        InputProcessor processor = new InputMultiplexer( keys, gestures );
+        Gdx.input.setInputProcessor( processor );
         Gdx.input.setCatchBackKey( true );
         Gdx.input.setCatchMenuKey( true );
         Gdx.app.debug( className, "show" );
@@ -72,8 +76,9 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
         update( delta );
 
-        Gdx.gl.glClearColor( GameColor.BG.get().r, GameColor.BG.get().g, GameColor.BG.get().b, 1 );
+        Gdx.gl.glClearColor( bg.r, bg.g, bg.b, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+
         draw();
         drawBlackScreen( delta );
     }
@@ -82,11 +87,7 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
     private void drawBlackScreen( float delta ) {
 
-        if(transition==null){
-            return;
-        }
-
-        if ( transition.isNeedToUpdate() ) {
+        if ( inTransition() ) {
             batch.begin();
             batch.setColor( 0, 0, 0, 1 - transition.current );
             batch.draw( blackFullScreen, 0, 0, Core.WIDTH, Core.HEIGHT );
@@ -95,24 +96,35 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
         // Этот апдейт должен быть здесь, чтобы избежать ситуации
         // когда в момент перехода экранов на секунду появляется предыдущая сцена
         transition.update( delta );
-        if ( transition.current != 1 && !transition.isNeedToUpdate() && nextScr!= null ) {
+        if ( transition.current != 1 && !inTransition() && nextScr != null ) {
             skipRender = true;
             switchGameScreen();
         }
+    }
+
+    /**
+     * true - экраны переключаются
+     * false - экраны не переключаются
+     */
+    public boolean inTransition() {
+        return transition.isNeedToUpdate();
     }
 
     public void update( float delta ) {
         fpsLogger.log();
     }
 
-    public void switchTo( MyGdxGame.SCREEN scr ) {
+    /**
+     * Включаем переключение экрана. Время перехода (Core.FADE)
+     */
+    public void transitionTo( MyGdxGame.SCREEN scr ) {
         transition.fromCurrent().setTo( 0 ).resetTime();
         nextScr = scr;
     }
 
     private void switchGameScreen() {
         skipRender = true;
-        Gdx.app.debug( className,"switchGameScreen to "+nextScr.toString() );
+        Gdx.app.debug( className, "switch GameScreen to " + nextScr.toString() );
         game.switchTo( nextScr );
     }
 
@@ -187,12 +199,10 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
     }
 
     @Override
-    public boolean zoom( float initialDistance, float distance ) {
-        return false;
-    }
+    public boolean zoom( float initDistance, float distance ) { return false; }
 
     @Override
-    public boolean pinch( Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2 ) {
+    public boolean pinch( Vector2 initPointer1, Vector2 initPointer2, Vector2 pointer1, Vector2 pointer2 ) {
         return false;
     }
 

@@ -12,11 +12,11 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 public enum Fonts {
 
-    TITLE( "k.otf", 80, 0, Color.WHITE ),
-    GUI_TEXT1( "k.otf", 44, 2, Color.WHITE, Color.DARK_GRAY ),
+    TITLE( "k.otf", 88, 2, Color.WHITE, Color.BLACK ),
+    TITLE_BUTTONS( "k.otf", 44, 1, Color.WHITE, Color.BLACK ),
+    GUI_TEXT1( "k.otf", 44, 1, Color.WHITE, Color.DARK_GRAY ),
     GUI_TEXT2( "k.otf", 32, 2, Color.WHITE, Color.BLACK ),
-    TABLE_TEXT( "k.otf", 32, 1, Color.WHITE, Color.BLACK ),
-    ;
+    TABLE_TEXT( "k.otf", 32, 1, Color.WHITE, Color.BLACK ),;
 
     public static final String extention = ".ttf";
     private final String     path;
@@ -106,7 +106,7 @@ public enum Fonts {
         return font;
     }
 
-    public Label.LabelStyle getStyle(){
+    public Label.LabelStyle getStyle() {
         return new Label.LabelStyle( this.get(), this.color );
     }
 }

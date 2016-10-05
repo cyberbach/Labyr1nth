@@ -34,7 +34,7 @@ public enum GameColor {
 
     //Honey Pot
     THEME21( 0x105B63 ),
-    THEME25( 0xFFFAD5 ),
+    //THEME25( 0xFFFAD5 ),
     THEME23( 0xBD4932 ),
     THEME22( 0xDB9E36 ),
     THEME24( 0xFFD34E ),
@@ -42,17 +42,16 @@ public enum GameColor {
     //1944mustang
     THEME32( 0x7E8AA2 ),
     THEME33( 0x263248 ),
-    THEME34( 0xFFFFFF ),
     THEME35( 0xFF9800 ),
 
     //Quiet Cry
-    THEME55( 0xEEEFF7 ),
+    //THEME55( 0xEEEFF7 ),
 
     //Dolores
     THEME61( 0x40627C ),
     THEME62( 0xD0A825 ),
     THEME63( 0xE8E595 ),
-    THEME65( 0xFFFAE4 ),
+    //THEME65( 0xFFFAE4 ),
 
     //Bloggy Gradient Blues
     THEME71( 0xABC8E2 ),
@@ -91,6 +90,15 @@ public enum GameColor {
     public static Color random() {
         int allColors   = GameColor.values().length;
         int colorNumber = MathUtils.random( allColors - 1 );
+        return GameColor.values()[ colorNumber ].get();
+    }
+
+    /**
+     * Случайный цвет, за исключением первого (т.к. первый цвет для фона)
+     * */
+    public static Color randomBut1() {
+        int allColors   = GameColor.values().length;
+        int colorNumber = 1 + MathUtils.random( allColors - 2 );
         return GameColor.values()[ colorNumber ].get();
     }
 

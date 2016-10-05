@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">labyrinth-game</string>
+    <string name="app_name">Labyr1nth</string>
     <string name="app_id">792144630636</string>
     <string name="connect_error">Error in GPGS</string>
 

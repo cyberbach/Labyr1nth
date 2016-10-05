@@ -15,13 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.overmy.labyr1nth.Core;
 import net.overmy.labyr1nth.MyGdxGame;
 import net.overmy.labyr1nth.MyGdxGame.SCREEN;
-import net.overmy.labyr1nth.utils.AtmoManager;
 import net.overmy.labyr1nth.neatresources.IMG;
 import net.overmy.labyr1nth.neatresources.NeatResources;
+import net.overmy.labyr1nth.utils.AtmoManager;
 
 
 public class LoadingScreen extends Base2DScreen {
-    final private String              className          = LoadingScreen.class.getSimpleName();
+
+    final private String className = LoadingScreen.class.getSimpleName();
     Image loadingBar;
     Stage stage;
 
@@ -31,7 +32,7 @@ public class LoadingScreen extends Base2DScreen {
         super( game );
 
         stage = new Stage();
-        loadingBar = new Image( IMG.generateSquareSprite( Core.WIDTH, Core.HEIGHT_HALF / 3 ) );
+        loadingBar = new Image( IMG.generateSquareSprite( Core.WIDTH, Core.HEIGHT / 14 ) );
         stage.addActor( loadingBar );
     }
 
@@ -40,7 +41,7 @@ public class LoadingScreen extends Base2DScreen {
         super.update( delta );
         stage.act( delta );
 
-        if(!loaded) {
+        if ( !loaded ) {
 
             if ( !NeatResources.getManager().update() ) {
                 loadingBar.setScaleX( NeatResources.getManager().getProgress() * 1.35f );
@@ -48,8 +49,8 @@ public class LoadingScreen extends Base2DScreen {
             else {
                 NeatResources.build();
                 AtmoManager.init();
-                switchTo( SCREEN.MENU );
-                loaded=true;
+                transitionTo( SCREEN.MENU );
+                loaded = true;
             }
         }
     }

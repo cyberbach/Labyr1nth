@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
@@ -45,7 +44,7 @@ public class GPGSImpl implements GPGS, GoogleApiClient.ConnectionCallbacks,
             "CgkI7Kb_-4YXEAIQEg",
             "CgkI7Kb_-4YXEAIQEw",
     };
-    private final String   LEADERBOARD = ">>> replace me <<<";
+    private final String   LEADERBOARD = "CgkI7Kb_-4YXEAIQFA";
     public    GoogleApiClient client;
     protected AndroidLauncher context;
 
@@ -58,17 +57,17 @@ public class GPGSImpl implements GPGS, GoogleApiClient.ConnectionCallbacks,
         // http://android-developers.blogspot.ru/2016/01/play-games-permissions-are-changing-in.html
         // В обновлениях написано, что нужно использовать ТОЛЬКО те АПИ, которые действительно
         // нужны.
-        // .addApi( Plus.API ).addScope( Plus.SCOPE_PLUS_LOGIN ) - не нужно
-        // .addScope( Games.SCOPE_GAMES ) - тоже не нужно
         client = new GoogleApiClient.Builder( context )
                 .addApi( Games.API, gamesOptions )
                 .build();
+        // .addApi( Plus.API ).addScope( Plus.SCOPE_PLUS_LOGIN ) - не нужно
+        // .addScope( Games.SCOPE_GAMES ) - тоже не нужно
     }
 
     @Override
     public void connect() {
-        // эта строчка проверяла правильность идентификатора приложения
-        //BaseGameUtils.verifySampleSetup( context, R.string.app_id );
+        if ( isConnected() ) { return; }
+
         client.registerConnectionCallbacks( this );
         client.registerConnectionFailedListener( this );
         client.connect();
@@ -78,6 +77,8 @@ public class GPGSImpl implements GPGS, GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void disconnect() {
+        if ( !isConnected() ) { return; }
+
         client.unregisterConnectionCallbacks( this );
         client.unregisterConnectionFailedListener( this );
         client.disconnect();
@@ -87,6 +88,8 @@ public class GPGSImpl implements GPGS, GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void signOut() {
+        if ( !isConnected() ) { return; }
+
         Games.signOut( client );
 
         Log.d( className, "Client: sign out" );
@@ -112,41 +115,41 @@ public class GPGSImpl implements GPGS, GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-    public void onStop() {
-        if ( isConnected() ) {
-            disconnect();
-        }
-    }
-
-    public void onStart() {
-        if ( !isConnected() ) {
-            connect();
-        }
-    }
-
     @Override
     public void unlockAchievement( int n ) {
-        Games.Achievements.unlock( client, ACHEIVEMENT[ n ] );
+        if ( !isConnected() ) { return; }
+
+        if ( n > ACHEIVEMENT.length ) { return; }
+        else { Games.Achievements.unlock( client, ACHEIVEMENT[ n ] ); }
     }
 
     @Override
     public void unlockIncrementAchievement( int n, int count ) {
-        Games.Achievements.increment( client, ACHEIVEMENT[ n ], count );
+        if ( !isConnected() ) { return; }
+
+        if ( n > ACHEIVEMENT.length ) { return; }
+        else { Games.Achievements.increment( client, ACHEIVEMENT[ n ], count ); }
     }
 
     @Override
     public void showAchievements() {
+        if ( !isConnected() ) { return; }
+
         Intent intent = Games.Achievements.getAchievementsIntent( client );
         context.startActivityForResult( intent, REQUEST_ACHIEVEMENTS );
     }
 
     @Override
     public void submitScore( long score ) {
+        if ( !isConnected() ) { return; }
+
         Games.Leaderboards.submitScore( client, LEADERBOARD, score );
     }
 
     @Override
     public void showLeaderboard() {
+        if ( !isConnected() ) { return; }
+
         Intent intent = Games.Leaderboards.getLeaderboardIntent( client, LEADERBOARD );
         context.startActivityForResult( intent, REQUEST_LEADERBOARD );
     }

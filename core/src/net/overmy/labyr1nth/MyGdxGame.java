@@ -14,8 +14,9 @@ import net.overmy.labyr1nth.screen.MenuScreen;
 
 public class MyGdxGame extends Game {
 
-    private final AdMob ad;
-    private final GPGS  gpgs;
+    public final AdMob ad;
+    public final GPGS  gpgs;
+    public boolean gpgsStateChange = false;
 
     public MyGdxGame( AdMob ad, GPGS gpgs ) {
         this.ad = ad;

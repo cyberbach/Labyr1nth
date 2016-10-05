@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class AtmoManager {
 
-    private final static int MAX_PARTS = 100;
+    private final static int MAX_PARTS = 40;
 
     private static ArrayList< AtmoPart > parts = null;
 

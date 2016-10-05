@@ -28,8 +28,6 @@ public class DoubleFloatAnimator {
     private Interpolation interpX = null;
     private Interpolation interpY = null;
 
-    private boolean needToUpdate = true;
-
     public DoubleFloatAnimator() {
         this( 0.0f, 0.0f, 1.0f, 1.0f, 0.35f, Interpolation.fade );
     }
@@ -92,7 +90,6 @@ public class DoubleFloatAnimator {
 
     public DoubleFloatAnimator resetTime() {
         time = 0.0f;
-        needToUpdate = true;
         return this;
     }
 
@@ -104,14 +101,11 @@ public class DoubleFloatAnimator {
 
         currentX = interpX.apply( fromX, toX, time / animationTime );
         currentY = interpY.apply( fromY, toY, time / animationTime );
-
-        // Если "отведённое время" минус "прошедшее время" всё ещё больше нуля, то апдейтим
-        if ( animationTime - time > 0 ) { needToUpdate = true; }
-        else { needToUpdate = false; }
     }
 
+    // Если "отведённое время" минус "прошедшее время" всё ещё больше нуля, то апдейтим
     public boolean isNeedToUpdate() {
-        return needToUpdate;
+        return animationTime - time > 0;
     }
 
     public DoubleFloatAnimator decX() {

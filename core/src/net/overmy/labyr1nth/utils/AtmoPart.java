@@ -34,8 +34,10 @@ class AtmoPart implements Disposable {
 
         distance = Core.randomAfterPercent( 0.2f, 0.5f );
 
-        int sizex = 5 + (int) (16 * distance);
-        int sizey = 5 + (int) (16 * distance);
+        float minimalSize = Core.HEIGHT_HALF / 25;
+
+        int sizex = (int) (minimalSize / 2 + minimalSize * distance);
+        int sizey = (int) (minimalSize / 2 + minimalSize * distance);
 
         // try to gen something interesting
         Pixmap pixmap = new Pixmap( sizex, sizey, Pixmap.Format.RGBA4444 );
@@ -44,10 +46,10 @@ class AtmoPart implements Disposable {
 
         pixmap.setColor( new Color( 1, 1, 1, 1 ) );
         boolean[][] lab;// = new boolean[14][14];
-        lab = LabyrinthGen.gen( sizex, sizey, 4 );
+        lab = LabyrinthGen.gen( sizex, sizey, 3 );
         for ( int j = 0; j < sizey; j++ )
             for ( int i = 0; i < sizex; i++ )
-                if ( lab[ i ][ j ] ) pixmap.drawPixel( i, j );
+                if ( lab[ i ][ j ] ) { pixmap.drawPixel( i, j ); }
         //else pixmap.drawPixel( i, j, ((int) (255 * 0) << 24) | ((int) (255 * 1) << 16) |((int) (255 * 1) << 8) | ((int) (255 * 1)) );
         lab = null;
 
@@ -59,7 +61,7 @@ class AtmoPart implements Disposable {
         xy = new DoubleFloatAnimator();
         alpha = new FloatAnimator();
 
-        final float size = Core.HEIGHT * 0.065f * distance;
+        final float size = Core.randomAfterPercent( 0.6f, Core.HEIGHT * 0.08f );
         particleSprite.setSize( size, size );
 
         particleSprite.setOrigin(
@@ -67,7 +69,7 @@ class AtmoPart implements Disposable {
                 particleSprite.getHeight() / 2 -
                 particleSprite.getHeight() * MathUtils.random() );
 
-        float animationTime = Core.randomAfterPercent( 0.4f, 4.0f ) * (1 / distance);
+        float animationTime = Core.randomAfterPercent( 0.6f, 2.0f ) * (1 / distance);
         xy.setAnimationTime( animationTime );
         alpha.setAnimationTime( animationTime * 0.5f );
 
@@ -117,7 +119,8 @@ class AtmoPart implements Disposable {
                     destY = MathUtils.randomBoolean() ?
                             xy.currentY + particleSprite.getWidth() * 2 * (1 / distance)
                             : xy.currentY - particleSprite.getWidth() * 2 * (1 / distance);
-                } else {
+                }
+                else {
                     destY = xy.currentY + particleSprite.getWidth() * 2 -
                             4 * particleSprite.getWidth() * MathUtils.random();
                     destX = MathUtils.randomBoolean() ?
@@ -145,7 +148,7 @@ class AtmoPart implements Disposable {
                 particleSprite.getHeight(),
                 1,
                 1,
-                xy.currentX + xy.currentY );
+                xy.currentX );
     }
 
     public void render( final Batch batch, final Color color ) {
@@ -160,15 +163,15 @@ class AtmoPart implements Disposable {
                 particleSprite.getHeight(),
                 1,
                 1,
-                xy.currentX + xy.currentY );
+                xy.currentX );
     }
 
     public void update( final float delta ) {
 
         alpha.update( delta );
         xy.update( delta );
-        if ( !alpha.isNeedToUpdate() ) alpha.setFrom( 1.0f ).setTo( 0.0f ).resetTime();
-        if ( !xy.isNeedToUpdate() ) gen();
+        if ( !alpha.isNeedToUpdate() ) { alpha.setFrom( 1.0f ).setTo( 0.0f ).resetTime(); }
+        if ( !xy.isNeedToUpdate() ) { gen(); }
     }
 
     @Override

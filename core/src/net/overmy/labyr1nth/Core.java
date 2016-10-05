@@ -12,15 +12,16 @@ import net.overmy.labyr1nth.neatresources.Settings;
  */
 public final class Core {
 
+    public final static float FADE = 0.35f;
     public static int   WIDTH;
     public static int   HEIGHT;
     public static int   WIDTH_HALF;
     public static int   HEIGHT_HALF;
     public static float aspectRatio;
-
-    public static boolean sound = true;
-    public static boolean music = true;
-    private static Core ourInstance = new Core();
+    public static  boolean sound       = true;
+    public static  boolean music       = true;
+    public static int level = 0;
+    private static Core    ourInstance = new Core();
 
     private Core() { }
 
@@ -40,18 +41,15 @@ public final class Core {
         if ( Settings.NotFirstRun.getBoolean() ) {
             sound = Settings.SoundFlag.getBoolean();
             music = Settings.MusicFlag.getBoolean();
-            // TODO load hero
-            level=Settings.Level.getInteger();
+            level = Settings.Level.getInteger();
         }
         else {
             sound = true;
             music = true;
 
-            level=0;
+            level = 0;
         }
     }
-
-    public static int level =0;
 
     public static void saveSettings() {
         Settings.Level.setInteger( level );
@@ -66,6 +64,4 @@ public final class Core {
     public static float randomAfterPercent( final float percent, final float rndValue ) {
         return rndValue * percent + MathUtils.random() * rndValue * (1 - percent);
     }
-
-    public final static float FADE       = 0.63f;
 }
