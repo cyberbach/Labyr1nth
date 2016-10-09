@@ -14,7 +14,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -37,11 +36,11 @@ import net.overmy.labyr1nth.utils.LabelHelper;
 
 public class IntroScreen extends Base2DScreen {
 
-    private float  maxTime        = 12.0f;
-    private Stage  stage          = null;
-    private Group  okgroup        = null;
-    private Group  levelgroup     = null;
-    private Group  introgroup     = null;
+    private float maxTime    = 12.0f;
+    private Stage stage      = null;
+    private Group okgroup    = null;
+    private Group levelgroup = null;
+    private Group introgroup = null;
     Runnable goToNextScreen = new Runnable() {
         @Override
         public void run() {

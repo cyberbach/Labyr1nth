@@ -24,9 +24,9 @@ android {
     signingConfigs {
         release {
             storeFile file("E:\\cb.jks")
-            storePassword "mykey2"
+            storePassword "pass22"
             keyAlias "cyberbach"
-            keyPassword "mykey2"
+            keyPassword "pass22"
         }
     }
     buildTypes {

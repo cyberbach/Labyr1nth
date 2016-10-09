@@ -9,6 +9,7 @@
 package net.overmy.labyr1nth.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -32,7 +33,8 @@ public class LoadingScreen extends Base2DScreen {
         super( game );
 
         stage = new Stage();
-        loadingBar = new Image( IMG.generateSquareSprite( Core.WIDTH, Core.HEIGHT / 14 ) );
+        Sprite lineSprite = IMG.generateSquareSprite( Core.WIDTH, Core.HEIGHT / 14 );
+        loadingBar = new Image( lineSprite );
         stage.addActor( loadingBar );
     }
 
@@ -42,7 +44,6 @@ public class LoadingScreen extends Base2DScreen {
         stage.act( delta );
 
         if ( !loaded ) {
-
             if ( !NeatResources.getManager().update() ) {
                 loadingBar.setScaleX( NeatResources.getManager().getProgress() * 1.35f );
             }

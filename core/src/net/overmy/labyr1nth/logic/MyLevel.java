@@ -8,7 +8,6 @@ package net.overmy.labyr1nth.logic;
 
 public final class MyLevel {
 
-    public static long[] time;
     private static int current;
     private static MyLevel ourInstance    = new MyLevel();
     private static int[]   labyrinthSizes = new int[]{
@@ -20,11 +19,7 @@ public final class MyLevel {
     };
     public static final int maxLevel = labyrinthSizes.length - 1;
 
-    private MyLevel() {
-        time = new long[ maxLevel ];
-        for ( int i = 0; i < maxLevel; i++ )
-            time[ i ] = 0;
-    }
+    private MyLevel() {}
 
     public static void set( int level ) {
         current = level;

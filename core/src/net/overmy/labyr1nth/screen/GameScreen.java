@@ -53,14 +53,13 @@ public class GameScreen extends Base2DScreen {
     private       DoubleFloatAnimator workPositionOffset = null;
     private       String              textTime           = "";
     private       String              textLevel          = "";
-
-    private ArrayList< Sprite > keys           = null;
-    private Sprite              handSprite     = null;
-    private Sprite              doorSprite     = null;
-    private int                 secretStuff    = 0;
-    private Sprite              secretSprite   = null;
-    private GridPoint2          secretPosition = null;
-    private boolean             zoomUsed       = false;
+    private       ArrayList< Sprite > keys               = null;
+    private       Sprite              handSprite         = null;
+    private       Sprite              doorSprite         = null;
+    private       int                 secretStuff        = 0;
+    private       Sprite              secretSprite       = null;
+    private       GridPoint2          secretPosition     = null;
+    private       boolean             zoomUsed           = false;
 
     public GameScreen( final MyGdxGame game ) {
         super( game );
@@ -291,25 +290,24 @@ public class GameScreen extends Base2DScreen {
 
             SoundTrack.CLICK.play();
         }
+        else {
+            for ( int i = 0; i < keys.size(); i++ ) {
+                float keyX = keys.get( i ).getX();
+                float keyY = keys.get( i ).getY();
+                if ( workPosition.x == keyX && workPosition.y == keyY ) {
+                    keys.remove( i );
+                    Core.keys++;
+                    Core.levelKeys++;
 
-        for ( int i = 0; i < keys.size(); i++ ) {
-            float keyX = keys.get( i ).getX();
-            float keyY = keys.get( i ).getY();
-            if ( workPosition.x == keyX && workPosition.y == keyY ) {
-                if ( MathUtils.randomBoolean() ) { SoundTrack.KEY1.play(); }
-                else { SoundTrack.KEY2.play(); }
-                keys.remove( i );
-                Core.keys++;
-                Core.levelKeys++;
+                    if ( MathUtils.randomBoolean() ) { SoundTrack.KEY1.play(); }
+                    else { SoundTrack.KEY2.play(); }
 
-                if ( MathUtils.randomBoolean() ) { SoundTrack.KEY1.play(); }
-                else { SoundTrack.KEY2.play(); }
-
-                if ( Core.keys >= 5000 ) { game.gpgs.unlockAchievement( 9 ); }
-                else if ( Core.keys >= 1000 ) { game.gpgs.unlockAchievement( 8 ); }
-                else if ( Core.keys >= 250 ) { game.gpgs.unlockAchievement( 7 ); }
-                else if ( Core.keys >= 50 ) { game.gpgs.unlockAchievement( 6 ); }
-                break;
+                    if ( Core.keys >= 5000 ) { game.gpgs.unlockAchievement( 9 ); }
+                    else if ( Core.keys >= 1000 ) { game.gpgs.unlockAchievement( 8 ); }
+                    else if ( Core.keys >= 250 ) { game.gpgs.unlockAchievement( 7 ); }
+                    else if ( Core.keys >= 50 ) { game.gpgs.unlockAchievement( 6 ); }
+                    break;
+                }
             }
         }
 
@@ -448,6 +446,26 @@ public class GameScreen extends Base2DScreen {
         //if ( scale > 1.0f ) { scale = 1.0f; }
         //if ( scale < 0.2f ) { scale = 0.2f; }
 
+        return false;
+    }
+
+    // Эта штука работает только в Desktop-версии
+    @Override
+    public boolean scrolled( int amount ) {
+        if ( isScaling() ) { return false; }
+
+        if ( amount > 0 ) {
+            if ( scalingScene.current != 0.2f ) {
+                scalingScene.fromCurrent().setTo( 0.2f ).resetTime();
+            }
+        }
+        else {
+            if ( scalingScene.current != 1.0f ) {
+                scalingScene.fromCurrent().setTo( 1.0f ).resetTime();
+            }
+        }
+
+        Gdx.app.debug( className, "Scroll amount = " + amount );
         return false;
     }
 

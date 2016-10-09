@@ -47,32 +47,31 @@ import net.overmy.labyr1nth.utils.LabelHelper;
 
 public class MenuScreen extends Base2DScreen {
 
-    private final int   labWidth             = Core.WIDTH / 3;
-    private final int   labHeight            = Core.HEIGHT / 3;
-    private final int   fullMaxGenerateTimes = 300;
-    private       float maxTime              = 0.6f;
-    private       float time                 = maxTime;
-    private       int   generates            = 0;
-    private int maxGenerateTimes;
-    private Stage       stage              = null;
-    private Group       titlegroup         = null;
-    private Group       startgroup         = null;
-    private Group       continuegroup      = null;
-    private Group       soundsgroup        = null;
-    private Group       connectToGPGSgroup = null;
-    private Texture     labyrinthTexture   = null;
-    private boolean[][] labyrinth          = null;
-    private boolean[][] previousLabyrinth  = null;
-    private Pixmap      pixmap             = null;
-    private Sprite      gradientSprite     = null;
+    private final int         labWidth             = Core.WIDTH / 3;
+    private final int         labHeight            = Core.HEIGHT / 3;
+    private final int         fullMaxGenerateTimes = 300;
+    private       float       maxTime              = 0.6f;
+    private       float       time                 = maxTime;
+    private       int         generates            = 0;
+    private       int         maxGenerateTimes     = 0;
+    private       Stage       stage                = null;
+    private       Group       titlegroup           = null;
+    private       Group       startgroup           = null;
+    private       Group       continuegroup        = null;
+    private       Group       soundsgroup          = null;
+    private       Group       connectToGPGSgroup   = null;
+    private       Texture     labyrinthTexture     = null;
+    private       boolean[][] labyrinth            = null;
+    private       boolean[][] previousLabyrinth    = null;
+    private       Pixmap      pixmap               = null;
+    private       Sprite      gradientSprite       = null;
 
     private Image soundsON  = null;
     private Image soundsOFF = null;
-
-    private Image acheivesImage = null;
+    private Image acheivesImage     = null;
     private Image leaderboardsImage = null;
-    private Image controllerON  = null;
-    private Image controllerOFF = null;
+    private Image controllerON      = null;
+    private Image controllerOFF     = null;
 
     private DoubleFloatAnimator dfa = null;
 
@@ -125,7 +124,6 @@ public class MenuScreen extends Base2DScreen {
             continuegroup.addListener( new ClickListener() {
                 @Override
                 public void clicked( InputEvent event, float x, float y ) {
-
                     scaleGroupsOut();
                     transitionTo( SCREEN.INTRO );
                     SoundTrack.CLICK.play();
@@ -142,7 +140,7 @@ public class MenuScreen extends Base2DScreen {
         acheivesImage.addListener( new ClickListener() {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
-                clickAnimation(acheivesImage);
+                clickAnimation( acheivesImage );
                 game.gpgs.showAchievements();
                 SoundTrack.CLICK.play();
             }
@@ -155,7 +153,7 @@ public class MenuScreen extends Base2DScreen {
         leaderboardsImage.addListener( new ClickListener() {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
-                clickAnimation(leaderboardsImage);
+                clickAnimation( leaderboardsImage );
                 game.gpgs.showLeaderboard();
                 SoundTrack.CLICK.play();
             }
@@ -206,10 +204,10 @@ public class MenuScreen extends Base2DScreen {
         Gdx.input.setCatchMenuKey( true );
     }
 
-    private void clickAnimation( Actor actor ){
+    private void clickAnimation( Actor actor ) {
         actor.addAction( Actions.sequence(
-                Actions.scaleTo( 0.5f,0.5f,Core.FADE*0.2f,Interpolation.circleIn ),
-                Actions.scaleTo( 1.0f,1.0f,Core.FADE*0.8f,Interpolation.circleOut )
+                Actions.scaleTo( 0.5f, 0.5f, Core.FADE * 0.2f, Interpolation.circleIn ),
+                Actions.scaleTo( 1.0f, 1.0f, Core.FADE * 0.8f, Interpolation.circleOut )
                                          ) );
     }
 
@@ -247,8 +245,8 @@ public class MenuScreen extends Base2DScreen {
         acheivesImage.clearActions();
         leaderboardsImage.clearActions();
         float pos = Core.HEIGHT * 0.1f;
-        float x1   = pos * 2.55f - pos / 2;
-        float x2   = pos * 4.05f - pos / 2;
+        float x1  = pos * 2.55f - pos / 2;
+        float x2  = pos * 4.05f - pos / 2;
         float y   = Core.HEIGHT - pos * 1.05f - pos / 2;
         float time;
         time = Core.randomAfterPercent( 0.4f, Core.FADE );
@@ -261,8 +259,8 @@ public class MenuScreen extends Base2DScreen {
         acheivesImage.clearActions();
         leaderboardsImage.clearActions();
         float pos = Core.HEIGHT * 0.1f;
-        float x1   = pos * 2.55f - pos / 2;
-        float x2   = pos * 4.05f - pos / 2;
+        float x1  = pos * 2.55f - pos / 2;
+        float x2  = pos * 4.05f - pos / 2;
         float y   = Core.HEIGHT;
         float time;
         time = Core.randomAfterPercent( 0.4f, Core.FADE );
@@ -284,6 +282,7 @@ public class MenuScreen extends Base2DScreen {
                 updateSoundsGroup();
                 Gdx.app.debug( "Sounds and music", "" + Core.sound );
                 SoundTrack.CLICK.play();
+                MusicTrack.stopAll();
             }
         } );
 
@@ -440,7 +439,7 @@ public class MenuScreen extends Base2DScreen {
     public void backButton() {
         if ( inTransition() ) { return; }
         scaleGroupsOut();
-        // Ни в коем случае не нужно делать прямого переключения экрана game.transitionTo()
+        // Ни в коем случае не нужно делать прямого переключения экрана game.switchTo()
         // За правильное переключение отвечает Base2DScreen
         transitionTo( SCREEN.EXIT );
     }

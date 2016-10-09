@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
@@ -214,6 +213,10 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
     public boolean touchDragged( int x, int y, int pointer ) { return false; }
 
+    public boolean scrolled( int amount ) {
+        return false;
+    }
+
     public void backButton() { }
 
     protected class MyKeysProcessor implements InputProcessor {
@@ -258,7 +261,7 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
         @Override
         public boolean scrolled( int amount ) {
-            return false;
+            return Base2DScreen.this.scrolled( amount );
         }
     }
 }

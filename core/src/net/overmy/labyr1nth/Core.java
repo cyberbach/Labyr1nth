@@ -1,6 +1,5 @@
 package net.overmy.labyr1nth;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
 import net.overmy.labyr1nth.logic.MyLevel;
@@ -20,16 +19,16 @@ public final class Core {
     public static int   WIDTH_HALF;
     public static int   HEIGHT_HALF;
     public static float aspectRatio;
-    public static  boolean sound       = true;
-    public static  boolean music       = true;
-    private static Core    ourInstance = new Core();
+    public static boolean sound = true;
+    public static boolean music = true;
     public static long keys;
-    public static int zooms;
+    public static int  zooms;
     public static long levelKeys;
     public static long steps;
     public static long finishedLevels;
-    public static int levelsWithoutZOOM;
-    public static int fullGameFinished;
+    public static int  levelsWithoutZOOM;
+    public static int  fullGameFinished;
+    private static Core ourInstance = new Core();
 
     private Core() { }
 
@@ -64,9 +63,9 @@ public final class Core {
             steps = 0;
             keys = 0;
             finishedLevels = 0;
-            zooms=0;
-            levelsWithoutZOOM=0;
-            fullGameFinished=0;
+            zooms = 0;
+            levelsWithoutZOOM = 0;
+            fullGameFinished = 0;
         }
     }
 
@@ -81,7 +80,6 @@ public final class Core {
         Settings.Zooms.setInteger( zooms );
         Settings.LevelsWithoutZoom.setInteger( levelsWithoutZOOM );
         Settings.FullGameFinished.setInteger( fullGameFinished );
-
 
         Settings.save();
     }

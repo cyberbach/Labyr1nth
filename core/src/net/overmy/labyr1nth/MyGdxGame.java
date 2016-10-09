@@ -26,8 +26,9 @@ public class MyGdxGame extends Game {
 
     @Override
     public void create() {
-        Gdx.app.setLogLevel( Application.LOG_DEBUG );
-        //Gdx.app.setLogLevel( Application.LOG_NONE );
+        //Gdx.app.setLogLevel( Application.LOG_DEBUG );
+        // TODO убрать дебаги из кода для релиз-версии
+        Gdx.app.setLogLevel( Application.LOG_NONE );
         Core.loadSettings();
         NeatResources.load();
         switchTo( SCREEN.LOADING );
