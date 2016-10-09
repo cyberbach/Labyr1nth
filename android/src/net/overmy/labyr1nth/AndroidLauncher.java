@@ -51,7 +51,7 @@ public class AndroidLauncher extends AndroidApplication {
         super.onStart();
         // Во время старта приложения, подключаемся к GPGS
         // Так рекомендует делать GOOGLE
-        //gpgs.connect();
+        gpgs.connect();
     }
 
     @Override

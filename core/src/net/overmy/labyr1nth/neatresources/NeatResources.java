@@ -13,6 +13,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
@@ -38,6 +39,8 @@ public final class NeatResources {
         manager.setLoader( FreeTypeFontGenerator.class, fontsGenerator );
         manager.setLoader( BitmapFont.class, ".ttf", fontsLoader );
         //manager.setLoader( ParticleEffect.class, particlesLoader );
+
+        Texture.setAssetManager( manager );
 
         IMG.load( manager );
         Fonts.load( manager );

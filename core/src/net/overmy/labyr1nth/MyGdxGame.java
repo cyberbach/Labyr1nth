@@ -4,12 +4,13 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
-import net.overmy.labyr1nth.utils.AtmoManager;
 import net.overmy.labyr1nth.neatresources.NeatResources;
-import net.overmy.labyr1nth.neatresources.Settings;
 import net.overmy.labyr1nth.screen.GameScreen;
+import net.overmy.labyr1nth.screen.IntroScreen;
 import net.overmy.labyr1nth.screen.LoadingScreen;
 import net.overmy.labyr1nth.screen.MenuScreen;
+import net.overmy.labyr1nth.screen.ResultsScreen;
+import net.overmy.labyr1nth.utils.AtmoManager;
 
 
 public class MyGdxGame extends Game {
@@ -38,33 +39,25 @@ public class MyGdxGame extends Game {
             ad.hide();
         }
 
-        switch ( scr ) {
-            case LOADING:
-                setScreen( new LoadingScreen( this ) );
-                break;
+        if ( scr == SCREEN.LOADING ) { setScreen( new LoadingScreen( this ) ); }
+        else if ( scr == SCREEN.INTRO ) { setScreen( new IntroScreen( this ) ); }
+        else if ( scr == SCREEN.GAME ) { setScreen( new GameScreen( this ) ); }
+        else if ( scr == SCREEN.RESULTS ) { setScreen( new ResultsScreen( this ) ); }
+        else if ( scr == SCREEN.MENU ) { setScreen( new MenuScreen( this ) ); }
+        else if ( scr == SCREEN.EXIT ) { exit(); }
 
-            case GAME:
-                setScreen( new GameScreen( this ) );
-                break;
+        //Screen my = SCREEN_SETTER.INTRO.create();
+    }
 
-            case MENU:
-                ad.show();
-                setScreen( new MenuScreen( this ) );
-                break;
+    private void exit() {
+        Core.saveSettings();
+        NeatResources.unload();
+        AtmoManager.dispose();
 
-            case EXIT:
-                Core.saveSettings();
-                NeatResources.unload();
-                AtmoManager.dispose();
-                Gdx.app.exit();
-                break;
-
-            default:
-                break;
-        }
+        Gdx.app.exit();
     }
 
     public enum SCREEN {
-        LOADING, MENU, GAME, EXIT
+        LOADING, MENU, INTRO, GAME, RESULTS, EXIT
     }
 }

@@ -1,7 +1,9 @@
 package net.overmy.labyr1nth;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
+import net.overmy.labyr1nth.logic.MyLevel;
 import net.overmy.labyr1nth.neatresources.Settings;
 
 
@@ -20,8 +22,14 @@ public final class Core {
     public static float aspectRatio;
     public static  boolean sound       = true;
     public static  boolean music       = true;
-    public static int level = 0;
     private static Core    ourInstance = new Core();
+    public static long keys;
+    public static int zooms;
+    public static long levelKeys;
+    public static long steps;
+    public static long finishedLevels;
+    public static int levelsWithoutZOOM;
+    public static int fullGameFinished;
 
     private Core() { }
 
@@ -39,24 +47,41 @@ public final class Core {
         Settings.load();
 
         if ( Settings.NotFirstRun.getBoolean() ) {
+            MyLevel.set( Settings.Level.getInteger() );
             sound = Settings.SoundFlag.getBoolean();
             music = Settings.MusicFlag.getBoolean();
-            level = Settings.Level.getInteger();
+            steps = Settings.Steps.getLong();
+            keys = Settings.Keys.getLong();
+            finishedLevels = Settings.FinishedLevels.getLong();
+            zooms = Settings.Zooms.getInteger();
+            levelsWithoutZOOM = Settings.LevelsWithoutZoom.getInteger();
+            fullGameFinished = Settings.FullGameFinished.getInteger();
         }
         else {
+            MyLevel.set( 0 );
             sound = true;
             music = true;
-
-            level = 0;
+            steps = 0;
+            keys = 0;
+            finishedLevels = 0;
+            zooms=0;
+            levelsWithoutZOOM=0;
+            fullGameFinished=0;
         }
     }
 
     public static void saveSettings() {
-        Settings.Level.setInteger( level );
         Settings.NotFirstRun.setBoolean( true );
-
+        Settings.Level.setInteger( MyLevel.getCurrent() );
         Settings.SoundFlag.setBoolean( sound );
         Settings.MusicFlag.setBoolean( music );
+        Settings.Steps.setLong( steps );
+        Settings.Keys.setLong( keys );
+        Settings.FinishedLevels.setLong( finishedLevels );
+        Settings.Zooms.setInteger( zooms );
+        Settings.LevelsWithoutZoom.setInteger( levelsWithoutZOOM );
+        Settings.FullGameFinished.setInteger( fullGameFinished );
+
 
         Settings.save();
     }

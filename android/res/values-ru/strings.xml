@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">Лабиринт</string>
+    <string name="app_id">792144630636</string>
+    <string name="connect_error">Ошибка в GPGS</string>
 
 </resources>

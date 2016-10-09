@@ -31,6 +31,7 @@ import net.overmy.labyr1nth.Core;
 import net.overmy.labyr1nth.MyGdxGame;
 import net.overmy.labyr1nth.MyGdxGame.SCREEN;
 import net.overmy.labyr1nth.logic.LabyrinthGen;
+import net.overmy.labyr1nth.logic.MyLevel;
 import net.overmy.labyr1nth.neatresources.Fonts;
 import net.overmy.labyr1nth.neatresources.GameColor;
 import net.overmy.labyr1nth.neatresources.IMG;
@@ -82,9 +83,9 @@ public class MenuScreen extends Base2DScreen {
     @Override
     public void show() {
 
+        game.ad.show();
         if ( Settings.NotFirstRun.getBoolean() ) {
-            // TODO продублировать в настройки
-            game.gpgs.unlockAchievement( 5 );
+            game.gpgs.unlockAchievement( 0 );
         }
 
         stage = new Stage();
@@ -104,20 +105,19 @@ public class MenuScreen extends Base2DScreen {
         startgroup.addListener( new ClickListener() {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
-                Core.level = 0;
-                SoundTrack.START.play();
+                MyLevel.set( 0 );
+                SoundTrack.CLICK.play();
                 scaleGroupsOut();
-                transitionTo( SCREEN.GAME );
-                // TODO click sound
+                transitionTo( SCREEN.INTRO );
             }
         } );
-        if ( Core.level > 0 ) {
+        if ( MyLevel.getCurrent() > 0 ) {
             startgroup.setPosition( Core.WIDTH * 0.3f, Core.HEIGHT * 0.35f );
         }
         stage.addActor( startgroup );
 
         // Создаем кнопку ПРОДОЛЖИТЬ ИГРУ
-        if ( Core.level > 0 ) {
+        if ( MyLevel.getCurrent() > 0 ) {
             Label continueLabel = LabelHelper.create( Text.CONTINUE_GAME, Fonts.TITLE_BUTTONS );
             //continueLabel.setDebug( true );
             continuegroup = GroupHelper.create( continueLabel );
@@ -125,10 +125,10 @@ public class MenuScreen extends Base2DScreen {
             continuegroup.addListener( new ClickListener() {
                 @Override
                 public void clicked( InputEvent event, float x, float y ) {
-                    SoundTrack.START.play();
+
                     scaleGroupsOut();
-                    transitionTo( SCREEN.GAME );
-                    // TODO click sound
+                    transitionTo( SCREEN.INTRO );
+                    SoundTrack.CLICK.play();
                 }
             } );
             stage.addActor( continuegroup );
@@ -144,7 +144,7 @@ public class MenuScreen extends Base2DScreen {
             public void clicked( InputEvent event, float x, float y ) {
                 clickAnimation(acheivesImage);
                 game.gpgs.showAchievements();
-                // TODO click sound
+                SoundTrack.CLICK.play();
             }
         } );
         stage.addActor( acheivesImage );
@@ -157,7 +157,7 @@ public class MenuScreen extends Base2DScreen {
             public void clicked( InputEvent event, float x, float y ) {
                 clickAnimation(leaderboardsImage);
                 game.gpgs.showLeaderboard();
-                // TODO click sound
+                SoundTrack.CLICK.play();
             }
         } );
         stage.addActor( leaderboardsImage );
@@ -219,6 +219,7 @@ public class MenuScreen extends Base2DScreen {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
                 if ( game.gpgs.isConnected() ) {
+                    game.gpgs.signOut();
                     game.gpgs.disconnect();
                 }
                 else {
@@ -226,7 +227,7 @@ public class MenuScreen extends Base2DScreen {
                 }
                 GroupHelper.scaleOut( connectToGPGSgroup );
                 updateConnectToGPGSGroup();
-                // TODO click sound
+                SoundTrack.CLICK.play();
             }
         } );
 
@@ -282,7 +283,7 @@ public class MenuScreen extends Base2DScreen {
                 GroupHelper.scaleOut( soundsgroup );
                 updateSoundsGroup();
                 Gdx.app.debug( "Sounds and music", "" + Core.sound );
-                // TODO click sound
+                SoundTrack.CLICK.play();
             }
         } );
 
@@ -290,19 +291,19 @@ public class MenuScreen extends Base2DScreen {
         else { soundsgroup.addActor( soundsOFF ); }
 
         GroupHelper.scaleIn( soundsgroup );
-        MusicTrack.TRACK.play( true );
+        MusicTrack.playRandom();
     }
 
     private void scaleGroupsIn() {
         GroupHelper.scaleIn( titlegroup );
         GroupHelper.scaleIn( startgroup );
-        if ( Core.level > 0 ) { GroupHelper.scaleIn( continuegroup ); }
+        if ( MyLevel.getCurrent() > 0 ) { GroupHelper.scaleIn( continuegroup ); }
     }
 
     private void scaleGroupsOut() {
         GroupHelper.scaleOut( titlegroup );
         GroupHelper.scaleOut( startgroup );
-        if ( Core.level > 0 ) { GroupHelper.scaleOut( continuegroup ); }
+        if ( MyLevel.getCurrent() > 0 ) { GroupHelper.scaleOut( continuegroup ); }
         GroupHelper.scaleOut( soundsgroup );
         if ( game.gpgs.isConnected() ) { hideGPGSstuff(); }
     }
@@ -439,6 +440,7 @@ public class MenuScreen extends Base2DScreen {
         scaleGroupsOut();
         // Ни в коем случае не нужно делать прямого переключения экрана game.transitionTo()
         // За правильное переключение отвечает Base2DScreen
+        SoundTrack.BACK.play();
         transitionTo( SCREEN.EXIT );
     }
 
@@ -447,7 +449,7 @@ public class MenuScreen extends Base2DScreen {
         super.dispose();
         titlegroup.clear();
         startgroup.clear();
-        if ( Core.level > 0 ) { continuegroup.clear(); }
+        if ( MyLevel.getCurrent() > 0 ) { continuegroup.clear(); }
         labyrinthTexture.dispose();
         labyrinth = null;
         previousLabyrinth = null;

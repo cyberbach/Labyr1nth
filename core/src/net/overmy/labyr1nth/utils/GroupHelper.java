@@ -31,18 +31,18 @@ public final class GroupHelper {
     /**
      * Группа появляется из 0 в 1 за время (FADE * 2)
      * */
-    public static void scaleIn( Group grp ) {
+    public static void scaleIn( Actor actor ) {
         float time = Core.randomAfterPercent( 0.6f, Core.FADE * 2 );
-        grp.addAction( Actions.sequence( Actions.scaleTo( 0, 0, 0 ),
+        actor.addAction( Actions.sequence( Actions.scaleTo( 0, 0, 0 ),
                                          Actions.scaleTo( 1, 1, time ) ) );
     }
 
     /**
      * Группа исчезает из 1 в 0 за время (FADE * 2)
      * */
-    public static void scaleOut( Group grp ) {
+    public static void scaleOut( Actor actor ) {
         float time = Core.randomAfterPercent( 0.6f, Core.FADE * 2 );
-        grp.addAction( Actions.sequence( Actions.scaleTo( 1, 1, 0 ),
+        actor.addAction( Actions.sequence( Actions.scaleTo( 1, 1, 0 ),
                                          Actions.scaleTo( 0, 0, time ) ) );
     }
 }

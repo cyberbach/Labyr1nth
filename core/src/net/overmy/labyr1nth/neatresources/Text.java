@@ -122,12 +122,20 @@ public enum Text {
               "Спасибо за игру!\n\nВы прошли все уровни." ),
     TITLE( "labyrinth", "Лабиринт" ),
     START_GAME( "Start New", "Начать новую игру" ),
+    OK( "OK", "Далее" ),
     CONTINUE_GAME( "Continue", "Продолжить" ),
     KEY( "key", "ключ" ),
     KEY_FOUND( "Keys are founded!", "Ключи найдены!" ),
     EXIT( "exit", "выход" ),
     TIME( "time ", "время " ),
-    LEVEL( "Level ", "Уровень " ),;
+    LEVEL( "Level ", "Уровень " ),
+    LEVEL_END( " finished!", " пройден!" ),
+
+    LEVEL_TIME( "Level time: ", "Время уровня: " ),
+    MAX_LEVEL_TIME( "Max time: ", "Максимальное время: " ),
+    LEVEL_KEYS( "Keys found: ", "Найдено ключей: " ),
+    TOTAL_KEYS( "Fulltime keys found: ", "Всего найдено ключей: " ),
+    ;
 
     private static boolean lang;
     private final  String  eng;
@@ -145,6 +153,11 @@ public enum Text {
 
     public String get() {
         return lang ? rus : eng;
+    }
+
+    @Override
+    public String toString(){
+        return get();
     }
 
 };

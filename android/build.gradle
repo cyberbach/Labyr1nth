@@ -23,10 +23,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("D:\\RU_CYBERBACH_APPS_KEY")
+            storeFile file("E:\\cb.jks")
             storePassword "mykey2"
             keyAlias "cyberbach"
-            keyPassword "myapps2"
+            keyPassword "mykey2"
         }
     }
     buildTypes {

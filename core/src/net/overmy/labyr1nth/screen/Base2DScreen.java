@@ -148,7 +148,8 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
     @Override
     public void resume() {
         skipRender = false;
-        Texture.setAssetManager( NeatResources.getManager() );
+        NeatResources.getManager().update();
+        NeatResources.getManager().finishLoading();
         Gdx.app.debug( className, "resume" );
     }
 

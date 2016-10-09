@@ -10,13 +10,19 @@ package net.overmy.labyr1nth.neatresources;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 
 import net.overmy.labyr1nth.Core;
 
 
 public enum MusicTrack {
 
-    TRACK( "track.mp3" ),;
+    TRACK1( "track1.mp3" ),
+    TRACK2( "track2.mp3" ),
+    TRACK3( "track3.mp3" ),
+    TRACK4( "track4.mp3" ),
+    ;
 
     private final String DEFAULT_DIR = "music/";
     private final String path;
@@ -78,6 +84,15 @@ public enum MusicTrack {
         } else {
             stopAll();
         }
+    }
+
+    public static void playRandom() {
+        stopAll();
+
+        int allMusicTracks   = MusicTrack.values().length;
+        int randomTrack = MathUtils.random( allMusicTracks - 1 );
+
+        MusicTrack.values()[ randomTrack ].play( true );
     }
 
     public void stop() {

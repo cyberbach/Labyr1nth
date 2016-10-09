@@ -15,8 +15,7 @@ public enum Fonts {
     TITLE( "k.otf", 88, 2, Color.WHITE, Color.BLACK ),
     TITLE_BUTTONS( "k.otf", 44, 1, Color.WHITE, Color.BLACK ),
     GUI_TEXT1( "k.otf", 44, 1, Color.WHITE, Color.DARK_GRAY ),
-    GUI_TEXT2( "k.otf", 32, 2, Color.WHITE, Color.BLACK ),
-    TABLE_TEXT( "k.otf", 32, 1, Color.WHITE, Color.BLACK ),;
+    GUI_TEXT2( "k.otf", 32, 1, Color.WHITE, Color.BLACK ),;
 
     public static final String extention = ".ttf";
     private final String     path;

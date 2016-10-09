@@ -17,7 +17,13 @@ public enum Settings {
     NotFirstRun( Boolean.TYPE ),
     SoundFlag( Boolean.TYPE ),
     MusicFlag( Boolean.TYPE ),
-    Level( Integer.TYPE )
+    Level( Integer.TYPE ),
+    FinishedLevels( Long.TYPE ),
+    Steps( Long.TYPE ),
+    Keys( Long.TYPE ),
+    Zooms( Integer.TYPE ),
+    LevelsWithoutZoom( Integer.TYPE ),
+    FullGameFinished( Integer.TYPE ),
     //Inv( String.class ),
     ;
 
@@ -26,44 +32,50 @@ public enum Settings {
     private final static String      SETTINGS = "game.prefs";
     private static       Preferences prefs    = null;
 
-    private final Class< ? > cls;
+    private final Class< ? > type;
     private       boolean    bData;
     private       int        iData;
     private       String     sData;
+    private       long       lData;
 
     private Settings( Class< ? > cls ) {
-        this.cls = cls;
+        this.type = cls;
     }
 
     public static void init() {
         prefs = Gdx.app.getPreferences( SETTINGS );
-        Gdx.app.log( className, "init" );
     }
 
     public static void load() {
         init();
         for ( int i = 0; i < Settings.values().length; i++ ) {
+            String settingName  = Settings.values()[ i ].toString();
+            String settingValue = "";
+            Class<?> settingType = Settings.values()[ i ].type;
 
-            if ( Settings.values()[ i ].cls.equals( Integer.TYPE ) )
-                Settings.values()[ i ].iData = prefs.getInteger(
-                        Settings.values()[ i ].toString() );
+            if ( settingType.equals( Integer.TYPE ) ) {
+                Settings.values()[ i ].iData = prefs.getInteger( settingName );
+                settingValue += Settings.values()[ i ].iData;
+            }
 
-            if ( Settings.values()[ i ].cls.equals( Boolean.TYPE ) )
-                Settings.values()[ i ].bData = prefs.getBoolean(
-                        Settings.values()[ i ].toString() );
+            if ( settingType.equals( Boolean.TYPE ) ) {
+                Settings.values()[ i ].bData = prefs.getBoolean( settingName );
+                settingValue += Settings.values()[ i ].bData;
+            }
+
+            if ( settingType.equals( Long.TYPE ) ) {
+                Settings.values()[ i ].lData = prefs.getLong( settingName );
+                settingValue += Settings.values()[ i ].lData;
+            }
 
             // Base64Coder.encodeString(
-            if ( Settings.values()[ i ].cls.equals( String.class ) )
-                Settings.values()[ i ].sData = prefs.getString( Settings.values()[ i ].toString() );
+            if ( settingType.equals( String.class ) ) {
+                Settings.values()[ i ].sData = prefs.getString( settingName );
+                settingValue += Settings.values()[ i ].sData;
+            }
 
-            Gdx.app.log( className + " " + Settings.values()[ i ].toString() + " " +
-                         Settings.values()[ i ].cls.toString(),
-                         Settings.values()[ i ].iData + " " +
-                         Settings.values()[ i ].bData + " " + Settings.values()[ i ].sData );
+            Gdx.app.debug( className + " " + settingName + " (" + settingType + ")", settingValue );
         }
-
-
-        Gdx.app.log( className, "load" );
     }
 
     public static void save() {
@@ -78,20 +90,30 @@ public enum Settings {
         Settings.CurrentScene.setInteger( 2 );
         Settings.save();*/
 
-
         for ( int i = 0; i < Settings.values().length; i++ ) {
-            if ( Settings.values()[ i ].cls.equals( Integer.TYPE ) )
-                prefs.putInteger( Settings.values()[ i ].toString(), Settings.values()[ i ].iData );
+            String settingName = Settings.values()[ i ].toString();
 
-            if ( Settings.values()[ i ].cls.equals( Boolean.TYPE ) )
-                prefs.putBoolean( Settings.values()[ i ].toString(), Settings.values()[ i ].bData );
+            Class<?> settingType = Settings.values()[ i ].type;
 
-            if ( Settings.values()[ i ].cls.equals( String.class ) )
-                prefs.putString( Settings.values()[ i ].toString(), Settings.values()[ i ].sData );
+            if ( settingType.equals( Integer.TYPE ) ) {
+                prefs.putInteger( settingName, Settings.values()[ i ].iData );
+            }
+
+            if ( settingType.equals( Long.TYPE ) ) {
+                prefs.putLong( settingName, Settings.values()[ i ].lData );
+            }
+
+            if ( settingType.equals( Boolean.TYPE ) ) {
+                prefs.putBoolean( settingName, Settings.values()[ i ].bData );
+            }
+
+            if ( settingType.equals( String.class ) ) {
+                prefs.putString( settingName, Settings.values()[ i ].sData );
+            }
         }
 
         prefs.flush();
-        Gdx.app.log( className, "save" );
+        Gdx.app.debug( className, "save" );
     }
 
     public String getString() {
@@ -118,4 +140,7 @@ public enum Settings {
         iData = value;
     }
 
+    public long getLong() { return lData; }
+
+    public void setLong( final long value ) { lData = value; }
 }

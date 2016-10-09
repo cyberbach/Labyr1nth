@@ -16,13 +16,10 @@ import net.overmy.labyr1nth.Core;
 
 public enum SoundTrack {
 
-    EXIT1( "exit1.mp3" ),
-    EXIT2( "exit2.mp3" ),
-    START( "start.mp3" ),
-    FINISH( "finish.mp3" ),
     KEY1( "key1.mp3" ),
     KEY2( "key2.mp3" ),
-    KEY3( "key3.mp3" ),
+    CLICK( "click.mp3" ),
+    BACK( "back.mp3" ),
      ;
 
     private final String DEFAULT_DIR = "sound/";

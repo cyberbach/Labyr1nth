@@ -9,7 +9,7 @@ public class DesktopLauncher {
 	static final String     appName      = DesktopLauncher.class.getPackage().getName();
 	// change this
 	// TODO test on square
-	static       SCREEN_CFG screenConfig = SCREEN_CFG.DEFAULT;
+	static       SCREEN_CFG screenConfig = SCREEN_CFG.SCREEN_SHOT;
 
 	public static void main( String[] arg ) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -26,6 +26,7 @@ public class DesktopLauncher {
 		SQUARE( 1024, 768 ),
 		FULL_HD( 1920, 1080 ),
 		SMALL( 320, 240 ),
+		SCREEN_SHOT( 1024, 500 ),
 		DEFAULT( 800, 480 );
 
 		final boolean LANDSCAPE         = true;
