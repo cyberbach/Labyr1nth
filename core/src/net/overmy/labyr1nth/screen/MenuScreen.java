@@ -291,7 +291,7 @@ public class MenuScreen extends Base2DScreen {
         else { soundsgroup.addActor( soundsOFF ); }
 
         GroupHelper.scaleIn( soundsgroup );
-        MusicTrack.playRandom();
+        MusicTrack.playRandomIfFinished();
     }
 
     private void scaleGroupsIn() {
@@ -346,6 +346,8 @@ public class MenuScreen extends Base2DScreen {
             updateConnectToGPGSGroup();
             game.gpgsStateChange = false;
         }
+
+        MusicTrack.playRandomIfFinished();
     }
 
     // Это очень медленный метод, его нельзя вызывать постоянно
@@ -440,7 +442,6 @@ public class MenuScreen extends Base2DScreen {
         scaleGroupsOut();
         // Ни в коем случае не нужно делать прямого переключения экрана game.transitionTo()
         // За правильное переключение отвечает Base2DScreen
-        SoundTrack.BACK.play();
         transitionTo( SCREEN.EXIT );
     }
 

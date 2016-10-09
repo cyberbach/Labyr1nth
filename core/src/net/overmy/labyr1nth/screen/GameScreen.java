@@ -70,8 +70,6 @@ public class GameScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        MusicTrack.playRandom();
-
         Core.levelKeys = 0;
 
         textLevel = Text.LEVEL.get() + (MyLevel.getCurrent() + 1);
@@ -195,6 +193,8 @@ public class GameScreen extends Base2DScreen {
             textTime = TIMER.get();
         }
         TIMER.tick( delta );
+
+        MusicTrack.playRandomIfFinished();
     }
 
     @Override

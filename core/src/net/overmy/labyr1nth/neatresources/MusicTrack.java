@@ -10,7 +10,6 @@ package net.overmy.labyr1nth.neatresources;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 
 import net.overmy.labyr1nth.Core;
@@ -21,8 +20,7 @@ public enum MusicTrack {
     TRACK1( "track1.mp3" ),
     TRACK2( "track2.mp3" ),
     TRACK3( "track3.mp3" ),
-    TRACK4( "track4.mp3" ),
-    ;
+    TRACK4( "track4.mp3" ),;
 
     private final String DEFAULT_DIR = "music/";
     private final String path;
@@ -63,12 +61,34 @@ public enum MusicTrack {
         }
     }
 
-    public void play( boolean loop ) {
+    public static void playRandom() {
+        stopAll();
 
+        int allMusicTracks = MusicTrack.values().length;
+        int randomTrack    = MathUtils.random( allMusicTracks - 1 );
+
+        MusicTrack.values()[ randomTrack ].play();
+    }
+
+    public static void playRandomIfFinished() {
+        int finishedTracks = 0;
+        for ( int i = 0; i < MusicTrack.values().length; i++ ) {
+            if ( !MusicTrack.values()[ i ].music.isPlaying() ) {
+                finishedTracks++;
+            }
+        }
+
+        if ( finishedTracks == MusicTrack.values().length ) {
+            playRandom();
+        }
+    }
+
+    public void loop() {
         if ( Core.music ) {
-            this.music.setLooping( loop );
+            this.music.setLooping( true );
             this.music.play();
-        } else {
+        }
+        else {
             stopAll();
         }
     }
@@ -78,21 +98,12 @@ public enum MusicTrack {
     }
 
     public void play() {
-
         if ( Core.music ) {
             this.music.play();
-        } else {
+        }
+        else {
             stopAll();
         }
-    }
-
-    public static void playRandom() {
-        stopAll();
-
-        int allMusicTracks   = MusicTrack.values().length;
-        int randomTrack = MathUtils.random( allMusicTracks - 1 );
-
-        MusicTrack.values()[ randomTrack ].play( true );
     }
 
     public void stop() {

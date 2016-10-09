@@ -14,7 +14,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -65,7 +64,9 @@ public class ResultsScreen extends Base2DScreen {
         //introLabel.setDebug( true );
         levelgroup = GroupHelper.create( levelLabel );
         levelgroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.9f );
-        stage.addActor( levelgroup );
+        if ( !MyLevel.isLast() ) {
+            stage.addActor( levelgroup );
+        }
 
         // Создаем Результаты уровня
         String levelResultsText = "";
@@ -73,6 +74,9 @@ public class ResultsScreen extends Base2DScreen {
         levelResultsText += Text.MAX_LEVEL_TIME.get() + TIMER.getMax() + "\n";
         levelResultsText += Text.LEVEL_KEYS.get() + Core.levelKeys + "\n";
         levelResultsText += Text.TOTAL_KEYS.get() + Core.keys;
+        if ( MyLevel.isLast() ) {
+            levelResultsText = Text.GAMEOVER.get();
+        }
         Label introLabel = LabelHelper.createWithWrap( levelResultsText, Fonts.GUI_TEXT2 );
         //introLabel.setDebug( true );
         outrogroup = GroupHelper.create( introLabel );
@@ -87,31 +91,20 @@ public class ResultsScreen extends Base2DScreen {
         okgroup.addListener( new ClickListener() {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
-                MyLevel.next();
-
                 if ( MyLevel.isLast() ) {
                     MyLevel.set( 0 );
 
                     scaleGroupsOut();
                     Core.fullGameFinished++;
-                    if ( Core.fullGameFinished == 1 ) {
-                        game.gpgs.unlockAchievement( 1 );
-                    }
-                    if ( Core.fullGameFinished == 2 ) {
-                        game.gpgs.unlockAchievement( 2 );
-                    }
-                    if ( Core.fullGameFinished == 3 ) {
-                        game.gpgs.unlockAchievement( 3 );
-                    }
-                    if ( Core.fullGameFinished == 4 ) {
-                        game.gpgs.unlockAchievement( 4 );
-                    }
-                    if ( Core.fullGameFinished == 5 ) {
-                        game.gpgs.unlockAchievement( 5 );
-                    }
+                    if ( Core.fullGameFinished == 1 ) { game.gpgs.unlockAchievement( 1 ); }
+                    if ( Core.fullGameFinished == 2 ) { game.gpgs.unlockAchievement( 2 ); }
+                    if ( Core.fullGameFinished == 3 ) { game.gpgs.unlockAchievement( 3 ); }
+                    if ( Core.fullGameFinished == 4 ) { game.gpgs.unlockAchievement( 4 ); }
+                    if ( Core.fullGameFinished == 5 ) { game.gpgs.unlockAchievement( 5 ); }
                     transitionTo( SCREEN.MENU );
                 }
                 else {
+                    MyLevel.next();
 
                     scaleGroupsOut();
                     transitionTo( SCREEN.INTRO );
