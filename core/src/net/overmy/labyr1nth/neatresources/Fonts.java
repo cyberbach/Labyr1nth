@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 public enum Fonts {
 
-    TITLE( "k.otf", 88, 2, Color.WHITE, Color.BLACK ),
+    TITLE( "k.otf", 80, 2, Color.WHITE, Color.BLACK ),
     TITLE_BUTTONS( "k.otf", 44, 1, Color.WHITE, Color.BLACK ),
     GUI_TEXT1( "k.otf", 44, 1, Color.WHITE, Color.DARK_GRAY ),
     GUI_TEXT2( "k.otf", 32, 1, Color.WHITE, Color.BLACK ),;

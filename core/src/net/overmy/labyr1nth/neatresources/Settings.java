@@ -27,8 +27,6 @@ public enum Settings {
     //Inv( String.class ),
     ;
 
-    static final private String className = Settings.class.getSimpleName();
-
     private final static String      SETTINGS = "game.prefs";
     private static       Preferences prefs    = null;
 
@@ -48,10 +46,11 @@ public enum Settings {
 
     public static void load() {
         init();
+
         for ( int i = 0; i < Settings.values().length; i++ ) {
-            String settingName  = Settings.values()[ i ].toString();
-            String settingValue = "";
-            Class<?> settingType = Settings.values()[ i ].type;
+            String     settingName  = Settings.values()[ i ].toString();
+            String     settingValue = "";
+            Class< ? > settingType  = Settings.values()[ i ].type;
 
             if ( settingType.equals( Integer.TYPE ) ) {
                 Settings.values()[ i ].iData = prefs.getInteger( settingName );
@@ -74,26 +73,15 @@ public enum Settings {
                 settingValue += Settings.values()[ i ].sData;
             }
 
-            Gdx.app.debug( className + " " + settingName + " (" + settingType + ")", settingValue );
+            Gdx.app.debug( settingName + " (" + settingType + ")", settingValue );
         }
     }
 
     public static void save() {
-
-        /*
-       Settings.Inv.setString( "rV1S2S3BhV2S3BwV0BlV3" );
-        Settings.Level.setInteger( 7 );
-        Settings.CurrentWheel.setInteger( 2 );
-        Settings.SoundFlag.setBoolean( true );
-        Settings.MusicFlag.setBoolean( true );
-
-        Settings.CurrentScene.setInteger( 2 );
-        Settings.save();*/
-
         for ( int i = 0; i < Settings.values().length; i++ ) {
             String settingName = Settings.values()[ i ].toString();
 
-            Class<?> settingType = Settings.values()[ i ].type;
+            Class< ? > settingType = Settings.values()[ i ].type;
 
             if ( settingType.equals( Integer.TYPE ) ) {
                 prefs.putInteger( settingName, Settings.values()[ i ].iData );
@@ -113,7 +101,6 @@ public enum Settings {
         }
 
         prefs.flush();
-        Gdx.app.debug( className, "save" );
     }
 
     public String getString() {

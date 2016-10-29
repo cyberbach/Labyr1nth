@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,15 +28,12 @@ import net.overmy.labyr1nth.utils.FloatAnimator;
  */
 public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
-    private final String className = Base2DScreen.class.getSimpleName();
-
     protected MyGdxGame game;
     protected SpriteBatch        batch           = null;
     private   FloatAnimator      transition      = null;
     private   MyGdxGame.SCREEN   nextScr         = null;
     private   OrthographicCamera camera          = null;
     private   Sprite             blackFullScreen = null;
-    private   FPSLogger          fpsLogger       = null;
     private   boolean            skipRender      = false;
     private   Color              bg              = GameColor.BG.get();
 
@@ -52,10 +48,6 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
         transition = new FloatAnimator( 0, 1, Core.FADE );
         blackFullScreen = IMG.generateSquareSprite( Core.WIDTH, Core.HEIGHT );
-
-        fpsLogger = new FPSLogger();
-
-        Gdx.app.debug( className, "new" );
     }
 
     @Override
@@ -66,7 +58,6 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
         Gdx.input.setInputProcessor( processor );
         Gdx.input.setCatchBackKey( true );
         Gdx.input.setCatchMenuKey( true );
-        Gdx.app.debug( className, "show" );
     }
 
     @Override
@@ -110,7 +101,7 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
     }
 
     public void update( float delta ) {
-        fpsLogger.log();
+
     }
 
     /**
@@ -123,7 +114,6 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
     private void switchGameScreen() {
         skipRender = true;
-        Gdx.app.debug( className, "switch GameScreen to " + nextScr.toString() );
         game.switchTo( nextScr );
     }
 
@@ -135,13 +125,11 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
     @Override
     public void hide() {
         skipRender = true;
-        Gdx.app.debug( className, "hide" );
     }
 
     @Override
     public void pause() {
         skipRender = true;
-        Gdx.app.debug( className, "pause" );
     }
 
     @Override
@@ -149,7 +137,6 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
         skipRender = false;
         NeatResources.getManager().update();
         NeatResources.getManager().finishLoading();
-        Gdx.app.debug( className, "resume" );
     }
 
     @Override
@@ -162,10 +149,6 @@ public class Base2DScreen implements Screen, GestureDetector.GestureListener {
 
         batch.dispose();
         batch = null;
-
-        fpsLogger = null;
-
-        Gdx.app.debug( className, "dispose" );
     }
 
     @Override

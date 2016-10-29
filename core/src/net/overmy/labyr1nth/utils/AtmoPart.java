@@ -29,11 +29,8 @@ class AtmoPart implements Disposable {
     private FLING_DIRECTION direction;
 
     public AtmoPart() {
-
         direction = FLING_DIRECTION.CENTER;
-
-        distance = Core.randomAfterPercent( 0.2f, 0.5f );
-
+        distance = MathUtils.random( 0.2f, 0.5f );
         float minimalSize = Core.HEIGHT_HALF / 25;
 
         int sizex = (int) (minimalSize / 2 + minimalSize * distance);
@@ -61,7 +58,7 @@ class AtmoPart implements Disposable {
         xy = new DoubleFloatAnimator();
         alpha = new FloatAnimator();
 
-        final float size = Core.randomAfterPercent( 0.6f, Core.HEIGHT * 0.08f );
+        final float size = MathUtils.random( Core.HEIGHT * 0.08f * 0.6f, Core.HEIGHT * 0.08f );
         particleSprite.setSize( size, size );
 
         particleSprite.setOrigin(
@@ -69,7 +66,8 @@ class AtmoPart implements Disposable {
                 particleSprite.getHeight() / 2 -
                 particleSprite.getHeight() * MathUtils.random() );
 
-        float animationTime = Core.randomAfterPercent( 0.6f, 2.0f ) * (1 / distance);
+        float randomTime    = MathUtils.random( 0.6f * 2.0f, 2.0f );
+        float animationTime = randomTime * (1 / distance);
         xy.setAnimationTime( animationTime );
         alpha.setAnimationTime( animationTime * 0.5f );
 
@@ -77,14 +75,12 @@ class AtmoPart implements Disposable {
     }
 
     public void setFling( float velocityX, float velocityY ) {
-
         xy.fromCurrent();
         xy.setTo( xy.currentX + velocityX * distance * 0.5f,
                   xy.currentY - velocityY * distance * 0.5f ).resetTime();
     }
 
     public void gen() {
-
         float destX;
         float destY;
 
@@ -167,7 +163,6 @@ class AtmoPart implements Disposable {
     }
 
     public void update( final float delta ) {
-
         alpha.update( delta );
         xy.update( delta );
         if ( !alpha.isNeedToUpdate() ) { alpha.setFrom( 1.0f ).setTo( 0.0f ).resetTime(); }

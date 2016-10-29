@@ -47,8 +47,8 @@ import net.overmy.labyr1nth.utils.LabelHelper;
 
 public class MenuScreen extends Base2DScreen {
 
-    private final int         labWidth             = Core.WIDTH / 3;
-    private final int         labHeight            = Core.HEIGHT / 3;
+    private final int         labWidth             = Core.WIDTH / 4;
+    private final int         labHeight            = Core.HEIGHT / 4;
     private final int         fullMaxGenerateTimes = 300;
     private       float       maxTime              = 0.6f;
     private       float       time                 = maxTime;
@@ -66,8 +66,8 @@ public class MenuScreen extends Base2DScreen {
     private       Pixmap      pixmap               = null;
     private       Sprite      gradientSprite       = null;
 
-    private Image soundsON  = null;
-    private Image soundsOFF = null;
+    private Image soundsON          = null;
+    private Image soundsOFF         = null;
     private Image acheivesImage     = null;
     private Image leaderboardsImage = null;
     private Image controllerON      = null;
@@ -98,7 +98,6 @@ public class MenuScreen extends Base2DScreen {
 
         // Создаем кнопку НАЧАТЬ НОВУЮ ИГРУ
         Label startLabel = LabelHelper.create( Text.START_GAME, Fonts.TITLE_BUTTONS );
-        //startLabel.setDebug( true );
         startgroup = GroupHelper.create( startLabel );
         startgroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.35f );
         startgroup.addListener( new ClickListener() {
@@ -118,7 +117,6 @@ public class MenuScreen extends Base2DScreen {
         // Создаем кнопку ПРОДОЛЖИТЬ ИГРУ
         if ( MyLevel.getCurrent() > 0 ) {
             Label continueLabel = LabelHelper.create( Text.CONTINUE_GAME, Fonts.TITLE_BUTTONS );
-            //continueLabel.setDebug( true );
             continuegroup = GroupHelper.create( continueLabel );
             continuegroup.setPosition( Core.WIDTH * 0.7f, Core.HEIGHT * 0.35f );
             continuegroup.addListener( new ClickListener() {
@@ -192,7 +190,7 @@ public class MenuScreen extends Base2DScreen {
 
         // Количество этапов генерации от 30 до 330
         // Если times больше этого числа, то текущий лабиринт удаляем и создаем новый
-        int rndTimes = (int) Core.randomAfterPercent( 0.1f, 300 );
+        int rndTimes = MathUtils.random( 30, 300 );
         maxGenerateTimes = fullMaxGenerateTimes / 10 + rndTimes;
 
         // К процессорам добавляем stage, чтобы не париться с ClickEvents
@@ -249,9 +247,10 @@ public class MenuScreen extends Base2DScreen {
         float x2  = pos * 4.05f - pos / 2;
         float y   = Core.HEIGHT - pos * 1.05f - pos / 2;
         float time;
-        time = Core.randomAfterPercent( 0.4f, Core.FADE );
+        time = MathUtils.random( Core.FADE * 0.4f, Core.FADE );
+        // .FADE );
         acheivesImage.addAction( Actions.moveTo( x1, y, time, Interpolation.circleOut ) );
-        time = Core.randomAfterPercent( 0.4f, Core.FADE );
+        time = MathUtils.random( Core.FADE * 0.4f, Core.FADE );
         leaderboardsImage.addAction( Actions.moveTo( x2, y, time, Interpolation.circleOut ) );
     }
 
@@ -263,9 +262,9 @@ public class MenuScreen extends Base2DScreen {
         float x2  = pos * 4.05f - pos / 2;
         float y   = Core.HEIGHT;
         float time;
-        time = Core.randomAfterPercent( 0.4f, Core.FADE );
+        time = MathUtils.random( Core.FADE * 0.4f, Core.FADE );
         acheivesImage.addAction( Actions.moveTo( x1, y, time, Interpolation.circleIn ) );
-        time = Core.randomAfterPercent( 0.4f, Core.FADE );
+        time = MathUtils.random( Core.FADE * 0.4f, Core.FADE );
         leaderboardsImage.addAction( Actions.moveTo( x2, y, time, Interpolation.circleIn ) );
     }
 
@@ -314,12 +313,12 @@ public class MenuScreen extends Base2DScreen {
         time -= delta;
         if ( time < 0 ) {
             // Время догенерации лабиринта всегда разное: от 0.06 до 0.6 секунды
-            time = Core.randomAfterPercent( 0.1f, maxTime );
+            time = MathUtils.random( maxTime * 0.1f, maxTime );
 
             generates++;
             if ( generates > maxGenerateTimes ) {
                 generates = 0;
-                int rndTimes = (int) Core.randomAfterPercent( 0.1f, 300 );
+                int rndTimes = MathUtils.random( 30, 300 );
                 maxGenerateTimes = fullMaxGenerateTimes / 10 + rndTimes;
                 createLabyrinth();
             }
@@ -353,7 +352,7 @@ public class MenuScreen extends Base2DScreen {
     private void createLabyrinth() {
         labyrinth = null;
         previousLabyrinth = null;
-        float rndLength        = Core.randomAfterPercent( 0.1f, Core.WIDTH * 0.7f );
+        float rndLength        = MathUtils.random( Core.WIDTH * 0.07f, Core.WIDTH * 0.7f );
         int   maxLengthOfCurve = (int) (Core.WIDTH * 0.3f + rndLength);
         // Сама генерация очень медленна
         labyrinth = LabyrinthGen.gen( labWidth, labHeight, 1, maxLengthOfCurve );
@@ -386,7 +385,7 @@ public class MenuScreen extends Base2DScreen {
                 previousLabyrinth[ i ][ j ] = labyrinth[ i ][ j ];
             }
 
-        float rndLength        = Core.randomAfterPercent( 0.1f, Core.WIDTH * 0.7f );
+        float rndLength        = MathUtils.random( Core.WIDTH * 0.07f, Core.WIDTH * 0.7f );
         int   maxLengthOfCurve = (int) (Core.WIDTH * 0.3f + rndLength);
         LabyrinthGen.add( labyrinth, 1, maxLengthOfCurve );
 

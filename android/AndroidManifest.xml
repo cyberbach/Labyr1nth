@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.overmy.labyr1nth"
-    android:versionCode="16"
+    android:versionCode="17"
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="24" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Allows applications to access information about networks. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Allows applications to access information about Wi-Fi networks. -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Allows applications to open network sockets. -->
+    <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+
+    <!-- Allows read only access to phone state, including the phone number of the device, current cellular network information, the status of any ongoing calls, and a list of any PhoneAccounts registered on the device. -->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+
 
     <application
         android:allowBackup="true"

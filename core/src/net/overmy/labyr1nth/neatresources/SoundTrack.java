@@ -20,7 +20,7 @@ public enum SoundTrack {
     KEY2( "key2.mp3" ),
     CLICK( "click.mp3" ),
     BACK( "back.mp3" ),
-     ;
+    ;
 
     private final String DEFAULT_DIR = "sound/";
     private final String path;
@@ -36,22 +36,18 @@ public enum SoundTrack {
     }
 
     public static void build( final AssetManager manager ) {
-
         for ( int i = 0; i < SoundTrack.values().length; i++ )
             SoundTrack.values()[ i ].snd = manager.get( SoundTrack.values()[ i ].path,
                                                         Sound.class );
     }
 
     public static void load( final AssetManager manager ) {
-
         for ( int i = 0; i < SoundTrack.values().length; i++ )
             manager.load( SoundTrack.values()[ i ].path, Sound.class );
     }
 
     public static void unload( final AssetManager manager ) {
-
         for ( int i = 0; i < SoundTrack.values().length; i++ ) {
-
             if ( SoundTrack.values()[ i ].snd != null ) {
                 SoundTrack.values()[ i ].snd.dispose();
                 SoundTrack.values()[ i ].snd = null;
@@ -64,7 +60,8 @@ public enum SoundTrack {
     public void play() {
         if ( Core.sound ) {
             this.snd.play();
-        } else {
+        }
+        else {
             stopAll();
         }
     }

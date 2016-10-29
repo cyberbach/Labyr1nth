@@ -8,7 +8,6 @@
 
 package net.overmy.labyr1nth.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,11 +22,9 @@ import net.overmy.labyr1nth.utils.AtmoManager;
 
 public class LoadingScreen extends Base2DScreen {
 
-    final private String className = LoadingScreen.class.getSimpleName();
-    Image loadingBar;
-    Stage stage;
-
     boolean loaded = false;
+    private Image loadingBar;
+    private Stage stage;
 
     public LoadingScreen( final MyGdxGame game ) {
         super( game );
@@ -67,7 +64,5 @@ public class LoadingScreen extends Base2DScreen {
 
         loadingBar.clear();
         stage.dispose();
-
-        Gdx.app.debug( className, "dispose" );
     }
 }

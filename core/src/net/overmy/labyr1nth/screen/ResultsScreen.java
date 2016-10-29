@@ -36,17 +36,10 @@ import net.overmy.labyr1nth.utils.TIMER;
 
 public class ResultsScreen extends Base2DScreen {
 
-    private Stage stage      = null;
-    private Group okgroup    = null;
-    private Group levelgroup = null;
-    private Group outrogroup = null;
-    Runnable goToNextScreen = new Runnable() {
-        @Override
-        public void run() {
-            scaleGroupsOut();
-            transitionTo( SCREEN.GAME );
-        }
-    };
+    private Stage  stage          = null;
+    private Group  okgroup        = null;
+    private Group  levelgroup     = null;
+    private Group  outrogroup     = null;
     private Sprite gradientSprite = null;
 
     public ResultsScreen( final MyGdxGame game ) {
@@ -61,7 +54,7 @@ public class ResultsScreen extends Base2DScreen {
         int    nLevel          = MyLevel.getCurrent() + 1;
         String levelNumberText = Text.LEVEL.get() + nLevel + Text.LEVEL_END.get();
         Label  levelLabel      = LabelHelper.create( levelNumberText, Fonts.GUI_TEXT2 );
-        //introLabel.setDebug( true );
+        //levelLabel.setDebug( true );
         levelgroup = GroupHelper.create( levelLabel );
         levelgroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.9f );
         if ( !MyLevel.isLast() ) {
@@ -78,14 +71,12 @@ public class ResultsScreen extends Base2DScreen {
             levelResultsText = Text.GAMEOVER.get();
         }
         Label introLabel = LabelHelper.createWithWrap( levelResultsText, Fonts.GUI_TEXT2 );
-        //introLabel.setDebug( true );
         outrogroup = GroupHelper.create( introLabel );
         outrogroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.5f );
         stage.addActor( outrogroup );
 
         // Создаем кнопку OK
         Label okLabel = LabelHelper.create( Text.OK, Fonts.TITLE_BUTTONS );
-        //okLabel.setDebug( true );
         okgroup = GroupHelper.create( okLabel );
         okgroup.setPosition( Core.WIDTH * 0.9f, Core.HEIGHT * 0.15f );
         okgroup.addListener( new ClickListener() {
@@ -97,10 +88,10 @@ public class ResultsScreen extends Base2DScreen {
                     scaleGroupsOut();
                     Core.fullGameFinished++;
                     if ( Core.fullGameFinished == 1 ) { game.gpgs.unlockAchievement( 1 ); }
-                    if ( Core.fullGameFinished == 2 ) { game.gpgs.unlockAchievement( 2 ); }
-                    if ( Core.fullGameFinished == 3 ) { game.gpgs.unlockAchievement( 3 ); }
-                    if ( Core.fullGameFinished == 4 ) { game.gpgs.unlockAchievement( 4 ); }
-                    if ( Core.fullGameFinished == 5 ) { game.gpgs.unlockAchievement( 5 ); }
+                    else if ( Core.fullGameFinished == 2 ) { game.gpgs.unlockAchievement( 2 ); }
+                    else if ( Core.fullGameFinished == 3 ) { game.gpgs.unlockAchievement( 3 ); }
+                    else if ( Core.fullGameFinished == 4 ) { game.gpgs.unlockAchievement( 4 ); }
+                    else if ( Core.fullGameFinished == 5 ) { game.gpgs.unlockAchievement( 5 ); }
                     transitionTo( SCREEN.MENU );
                 }
                 else {

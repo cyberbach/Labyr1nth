@@ -8,7 +8,6 @@
 
 package net.overmy.labyr1nth.neatresources;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -23,9 +22,8 @@ import com.badlogic.gdx.utils.Logger;
 
 public final class NeatResources {
 
-    private final static String             className = NeatResources.class.getSimpleName();
-    private final static FileHandleResolver resolver  = new InternalFileHandleResolver();
-    private static       AssetManager       manager   = null;
+    private final static FileHandleResolver resolver = new InternalFileHandleResolver();
+    private static       AssetManager       manager  = null;
 
     private NeatResources() {}
 
@@ -46,8 +44,6 @@ public final class NeatResources {
         Fonts.load( manager );
         MusicTrack.load( manager );
         SoundTrack.load( manager );
-
-        Gdx.app.debug( className, "load" );
     }
 
     public static void build() {
@@ -57,8 +53,6 @@ public final class NeatResources {
         Fonts.build( manager );
         MusicTrack.build( manager );
         SoundTrack.build( manager );
-
-        Gdx.app.debug( className, "builded" );
     }
 
     public static void unload() {
@@ -69,8 +63,6 @@ public final class NeatResources {
 
         manager.finishLoading();
         manager.dispose();
-
-        Gdx.app.debug( className, "unload" );
     }
 
     public static AssetManager getManager() {

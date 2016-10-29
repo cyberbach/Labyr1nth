@@ -8,9 +8,6 @@
 
 package net.overmy.labyr1nth.neatresources;
 
-import com.badlogic.gdx.Gdx;
-
-
 public enum Text {
 
     LEVEL0( "1. Find the key\n2. Find the EXIT\nSwipe to move.\nTap to pick the key.",
@@ -141,22 +138,21 @@ public enum Text {
     private final  String  eng;
     private final  String  rus;
 
-    private Text( final String rus, final String eng ) {
+    private Text( final String eng, final String rus ) {
         this.eng = eng;
         this.rus = rus;
     }
 
     public static void detect() {
-        lang = java.util.Locale.getDefault().toString().equals( "ru_RU" ) ? true : false;
-        Gdx.app.debug( Text.class.getSimpleName(), java.util.Locale.getDefault().toString() );
+        String defaultLocale = java.util.Locale.getDefault().toString();
+        lang = defaultLocale.equals( "ru_RU" );
+        // Gdx.app.debug( "Java locale", defaultLocale );
     }
 
-    public String get() {
-        return lang ? rus : eng;
-    }
+    public String get() { return lang ? rus : eng; }
 
     @Override
-    public String toString(){
+    public String toString() {
         return get();
     }
 

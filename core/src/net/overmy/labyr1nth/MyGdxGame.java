@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 import net.overmy.labyr1nth.neatresources.NeatResources;
+import net.overmy.labyr1nth.neatresources.Text;
 import net.overmy.labyr1nth.screen.GameScreen;
 import net.overmy.labyr1nth.screen.IntroScreen;
 import net.overmy.labyr1nth.screen.LoadingScreen;
@@ -27,8 +28,8 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
         //Gdx.app.setLogLevel( Application.LOG_DEBUG );
-        // TODO убрать дебаги из кода для релиз-версии
         Gdx.app.setLogLevel( Application.LOG_NONE );
+        Text.detect();
         Core.loadSettings();
         NeatResources.load();
         switchTo( SCREEN.LOADING );
@@ -46,8 +47,6 @@ public class MyGdxGame extends Game {
         else if ( scr == SCREEN.RESULTS ) { setScreen( new ResultsScreen( this ) ); }
         else if ( scr == SCREEN.MENU ) { setScreen( new MenuScreen( this ) ); }
         else if ( scr == SCREEN.EXIT ) { exit(); }
-
-        //Screen my = SCREEN_SETTER.INTRO.create();
     }
 
     private void exit() {

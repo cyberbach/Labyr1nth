@@ -1,7 +1,5 @@
 package net.overmy.labyr1nth;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import net.overmy.labyr1nth.logic.MyLevel;
 import net.overmy.labyr1nth.neatresources.Settings;
 
@@ -14,20 +12,23 @@ import net.overmy.labyr1nth.neatresources.Settings;
 public final class Core {
 
     public final static float FADE = 0.35f;
+
     public static int   WIDTH;
     public static int   HEIGHT;
     public static int   WIDTH_HALF;
     public static int   HEIGHT_HALF;
     public static float aspectRatio;
-    public static boolean sound = true;
-    public static boolean music = true;
-    public static long keys;
-    public static int  zooms;
-    public static long levelKeys;
-    public static long steps;
-    public static long finishedLevels;
-    public static int  levelsWithoutZOOM;
-    public static int  fullGameFinished;
+
+    public static boolean sound;
+    public static boolean music;
+    public static long    keys;
+    public static int     zooms;
+    public static long    levelKeys;
+    public static long    steps;
+    public static long    finishedLevels;
+    public static int     levelsWithoutZOOM;
+    public static int     fullGameFinished;
+
     private static Core ourInstance = new Core();
 
     private Core() { }
@@ -37,8 +38,6 @@ public final class Core {
         HEIGHT = height;
         WIDTH_HALF = width >> 1;
         HEIGHT_HALF = height >> 1;
-
-        // TODO check the aspect ratio
         aspectRatio = (float) height / 480.0f;
     }
 
@@ -82,9 +81,5 @@ public final class Core {
         Settings.FullGameFinished.setInteger( fullGameFinished );
 
         Settings.save();
-    }
-
-    public static float randomAfterPercent( final float percent, final float rndValue ) {
-        return rndValue * percent + MathUtils.random() * rndValue * (1 - percent);
     }
 }

@@ -10,7 +10,7 @@ public class DesktopLauncher {
 
     static final String     appName      = DesktopLauncher.class.getPackage().getName();
     // change this
-    static       SCREEN_CFG screenConfig = SCREEN_CFG.DEFAULT;
+    static       SCREEN_CFG screenConfig = SCREEN_CFG.SQUARE;
 
     public static void main( String[] arg ) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

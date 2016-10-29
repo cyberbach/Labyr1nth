@@ -36,30 +36,29 @@ import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
 
-    private final String              className          = GameScreen.class.getSimpleName();
-    private       BitmapFont          font2              = Fonts.GUI_TEXT2.get();
-    private       FloatAnimator       scalingScene       = null;
-    private       float               scale              = 1.0f;
-    private       boolean             swiped             = false;
-    private       int                 squareSize         = 0;
-    private       float               heightOffset       = 0;
-    private       float               widthOffset        = 0;
-    private       boolean[][]         lab                = null;
-    private       Sprite              sprite             = null;
-    private       Sprite              gradientSprite     = null;
-    private       GridPoint2          workPosition       = null;
-    private       GridPoint2          exitPosition       = null;
-    private       Color               currentLevelColor  = null;
-    private       DoubleFloatAnimator workPositionOffset = null;
-    private       String              textTime           = "";
-    private       String              textLevel          = "";
-    private       ArrayList< Sprite > keys               = null;
-    private       Sprite              handSprite         = null;
-    private       Sprite              doorSprite         = null;
-    private       int                 secretStuff        = 0;
-    private       Sprite              secretSprite       = null;
-    private       GridPoint2          secretPosition     = null;
-    private       boolean             zoomUsed           = false;
+    private BitmapFont          font2              = Fonts.GUI_TEXT2.get();
+    private FloatAnimator       scalingScene       = null;
+    private float               scale              = 1.0f;
+    private boolean             swiped             = false;
+    private int                 squareSize         = 0;
+    private float               heightOffset       = 0;
+    private float               widthOffset        = 0;
+    private boolean[][]         lab                = null;
+    private Sprite              sprite             = null;
+    private Sprite              gradientSprite     = null;
+    private GridPoint2          workPosition       = null;
+    private GridPoint2          exitPosition       = null;
+    private Color               currentLevelColor  = null;
+    private DoubleFloatAnimator workPositionOffset = null;
+    private String              textTime           = "";
+    private String              textLevel          = "";
+    private ArrayList< Sprite > keys               = null;
+    private Sprite              handSprite         = null;
+    private Sprite              doorSprite         = null;
+    private int                 secretStuff        = 0;
+    private Sprite              secretSprite       = null;
+    private GridPoint2          secretPosition     = null;
+    private boolean             zoomUsed           = false;
 
     public GameScreen( final MyGdxGame game ) {
         super( game );
@@ -72,9 +71,6 @@ public class GameScreen extends Base2DScreen {
         Core.levelKeys = 0;
 
         textLevel = Text.LEVEL.get() + (MyLevel.getCurrent() + 1);
-
-        // TODO test acheivements on errors
-        game.gpgs.unlockAchievement( 50 );
 
         squareSize = (int) (Core.HEIGHT * 0.6f);
         heightOffset = Core.HEIGHT * 0.2f;
@@ -142,8 +138,8 @@ public class GameScreen extends Base2DScreen {
         doorSprite = IMG.values()[ offsetDoorIMG ].createSprite();
 
         points.clear();
-
-        // TODO вывод в консоль лабиринта
+/*
+        // вывод в консоль лабиринта
         String s = "\n";
         for ( int j = lab[ 0 ].length - 1; j >= 0; j-- ) {
             for ( int i = 0; i < lab.length; i++ ) {
@@ -152,6 +148,7 @@ public class GameScreen extends Base2DScreen {
             s += "\n";
         }
         Gdx.app.debug( className + " Core.level " + MyLevel.getCurrent(), "" + s );
+*/
 
         scalingScene = new FloatAnimator( 0, 1, Core.FADE * 3 );
         workPositionOffset = new DoubleFloatAnimator( 0, 0, 0, 0, Core.FADE * 0.5f );
@@ -219,13 +216,13 @@ public class GameScreen extends Base2DScreen {
 
         Core.steps++;
         if ( Core.steps > 500 ) { game.gpgs.unlockAchievement( 29 ); }
-        if ( Core.steps > 3000 ) { game.gpgs.unlockAchievement( 30 ); }
-        if ( Core.steps > 7000 ) { game.gpgs.unlockAchievement( 31 ); }
-        if ( Core.steps > 25000 ) { game.gpgs.unlockAchievement( 32 ); }
-        if ( Core.steps > 70000 ) { game.gpgs.unlockAchievement( 33 ); }
-        if ( Core.steps > 150000 ) { game.gpgs.unlockAchievement( 34 ); }
-        if ( Core.steps > 500000 ) { game.gpgs.unlockAchievement( 35 ); }
-        if ( Core.steps > 1000000 ) { game.gpgs.unlockAchievement( 36 ); }
+        else if ( Core.steps > 3000 ) { game.gpgs.unlockAchievement( 30 ); }
+        else if ( Core.steps > 7000 ) { game.gpgs.unlockAchievement( 31 ); }
+        else if ( Core.steps > 25000 ) { game.gpgs.unlockAchievement( 32 ); }
+        else if ( Core.steps > 70000 ) { game.gpgs.unlockAchievement( 33 ); }
+        else if ( Core.steps > 150000 ) { game.gpgs.unlockAchievement( 34 ); }
+        else if ( Core.steps > 500000 ) { game.gpgs.unlockAchievement( 35 ); }
+        else if ( Core.steps > 1000000 ) { game.gpgs.unlockAchievement( 36 ); }
 
         float modVelX = (velocityX > 0) ? velocityX : -velocityX;
         float modVelY = (velocityY > 0) ? velocityY : -velocityY;
@@ -270,7 +267,7 @@ public class GameScreen extends Base2DScreen {
         if ( keys.isEmpty() && workPosition.equals( exitPosition ) ) {
             Core.finishedLevels++;
 
-            Gdx.app.debug( className, "finishedLevels=" + Core.finishedLevels );
+            // Gdx.app.debug( className, "finishedLevels=" + Core.finishedLevels );
 
             if ( Core.finishedLevels >= 149 ) { game.gpgs.unlockAchievement( 14 ); }
             else if ( Core.finishedLevels >= 99 ) { game.gpgs.unlockAchievement( 13 ); }
@@ -318,7 +315,7 @@ public class GameScreen extends Base2DScreen {
             SoundTrack.BACK.play();
         }
 
-        Gdx.app.debug( className, "tap " + x + " " + y );
+        //Gdx.app.debug( className, "tap " + x + " " + y );
         return false;
     }
 
@@ -448,7 +445,7 @@ public class GameScreen extends Base2DScreen {
 
         return false;
     }
-
+/*
     // Эта штука работает только в Desktop-версии
     @Override
     public boolean scrolled( int amount ) {
@@ -465,15 +462,16 @@ public class GameScreen extends Base2DScreen {
             }
         }
 
-        Gdx.app.debug( className, "Scroll amount = " + amount );
+        //Gdx.app.debug( className, "Scroll amount = " + amount );
         return false;
     }
+*/
 
     @Override
     public void dispose() {
         super.dispose();
 
         Core.saveSettings();
-        Gdx.app.debug( className, "dispose" );
+        // Gdx.app.debug( className, "dispose" );
     }
 }
