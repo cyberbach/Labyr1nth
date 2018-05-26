@@ -16,13 +16,9 @@ import net.overmy.labyr1nth.utils.AtmoManager;
 
 public class MyGdxGame extends Game {
 
-    public final AdMob ad;
-    public final GPGS  gpgs;
     public boolean gpgsStateChange = false;
 
-    public MyGdxGame( AdMob ad, GPGS gpgs ) {
-        this.ad = ad;
-        this.gpgs = gpgs;
+    public MyGdxGame() {
     }
 
     @Override
@@ -38,7 +34,6 @@ public class MyGdxGame extends Game {
     public void switchTo( final SCREEN scr ) {
         if ( this.getScreen() != null ) {
             this.screen.dispose();
-            ad.hide();
         }
 
         if ( scr == SCREEN.LOADING ) { setScreen( new LoadingScreen( this ) ); }

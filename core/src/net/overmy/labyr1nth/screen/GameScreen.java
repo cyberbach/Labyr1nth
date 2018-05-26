@@ -215,14 +215,6 @@ public class GameScreen extends Base2DScreen {
         if ( swiped || scale < 1.0f ) { return false; }
 
         Core.steps++;
-        if ( Core.steps > 500 ) { game.gpgs.unlockAchievement( 29 ); }
-        else if ( Core.steps > 3000 ) { game.gpgs.unlockAchievement( 30 ); }
-        else if ( Core.steps > 7000 ) { game.gpgs.unlockAchievement( 31 ); }
-        else if ( Core.steps > 25000 ) { game.gpgs.unlockAchievement( 32 ); }
-        else if ( Core.steps > 70000 ) { game.gpgs.unlockAchievement( 33 ); }
-        else if ( Core.steps > 150000 ) { game.gpgs.unlockAchievement( 34 ); }
-        else if ( Core.steps > 500000 ) { game.gpgs.unlockAchievement( 35 ); }
-        else if ( Core.steps > 1000000 ) { game.gpgs.unlockAchievement( 36 ); }
 
         float modVelX = (velocityX > 0) ? velocityX : -velocityX;
         float modVelY = (velocityY > 0) ? velocityY : -velocityY;
@@ -269,20 +261,6 @@ public class GameScreen extends Base2DScreen {
 
             // Gdx.app.debug( className, "finishedLevels=" + Core.finishedLevels );
 
-            if ( Core.finishedLevels >= 149 ) { game.gpgs.unlockAchievement( 14 ); }
-            else if ( Core.finishedLevels >= 99 ) { game.gpgs.unlockAchievement( 13 ); }
-            else if ( Core.finishedLevels >= 25 ) { game.gpgs.unlockAchievement( 12 ); }
-            else if ( Core.finishedLevels >= 10 ) { game.gpgs.unlockAchievement( 11 ); }
-            else if ( Core.finishedLevels >= 3 ) { game.gpgs.unlockAchievement( 10 ); }
-            game.gpgs.submitScore( Core.finishedLevels );
-
-            if ( !zoomUsed ) { Core.levelsWithoutZOOM++; }
-            if ( Core.levelsWithoutZOOM >= 50 ) { game.gpgs.unlockAchievement( 22 ); }
-            else if ( Core.levelsWithoutZOOM >= 40 ) { game.gpgs.unlockAchievement( 21 ); }
-            else if ( Core.levelsWithoutZOOM >= 30 ) { game.gpgs.unlockAchievement( 20 ); }
-            else if ( Core.levelsWithoutZOOM >= 20 ) { game.gpgs.unlockAchievement( 19 ); }
-            else if ( Core.levelsWithoutZOOM >= 10 ) { game.gpgs.unlockAchievement( 18 ); }
-
             transitionTo( SCREEN.RESULTS );
 
             SoundTrack.CLICK.play();
@@ -299,17 +277,12 @@ public class GameScreen extends Base2DScreen {
                     if ( MathUtils.randomBoolean() ) { SoundTrack.KEY1.play(); }
                     else { SoundTrack.KEY2.play(); }
 
-                    if ( Core.keys >= 5000 ) { game.gpgs.unlockAchievement( 9 ); }
-                    else if ( Core.keys >= 1000 ) { game.gpgs.unlockAchievement( 8 ); }
-                    else if ( Core.keys >= 250 ) { game.gpgs.unlockAchievement( 7 ); }
-                    else if ( Core.keys >= 50 ) { game.gpgs.unlockAchievement( 6 ); }
                     break;
                 }
             }
         }
 
         if ( workPosition.equals( secretPosition ) ) {
-            game.gpgs.unlockAchievement( 23 + secretStuff - 1 );
             secretStuff = 0;
 
             SoundTrack.BACK.play();
@@ -427,9 +400,6 @@ public class GameScreen extends Base2DScreen {
                 scalingScene.fromCurrent().setTo( 0.2f ).resetTime();
                 zoomUsed = true;
                 Core.zooms++;
-                if ( Core.zooms >= 25 ) { game.gpgs.unlockAchievement( 15 ); }
-                if ( Core.zooms >= 100 ) { game.gpgs.unlockAchievement( 16 ); }
-                if ( Core.zooms >= 300 ) { game.gpgs.unlockAchievement( 17 ); }
             }
         }
         // Если наоборот, то мы от центра разводим пальцы к краям

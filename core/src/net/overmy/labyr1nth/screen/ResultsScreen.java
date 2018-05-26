@@ -87,11 +87,6 @@ public class ResultsScreen extends Base2DScreen {
 
                     scaleGroupsOut();
                     Core.fullGameFinished++;
-                    if ( Core.fullGameFinished == 1 ) { game.gpgs.unlockAchievement( 1 ); }
-                    else if ( Core.fullGameFinished == 2 ) { game.gpgs.unlockAchievement( 2 ); }
-                    else if ( Core.fullGameFinished == 3 ) { game.gpgs.unlockAchievement( 3 ); }
-                    else if ( Core.fullGameFinished == 4 ) { game.gpgs.unlockAchievement( 4 ); }
-                    else if ( Core.fullGameFinished == 5 ) { game.gpgs.unlockAchievement( 5 ); }
                     transitionTo( SCREEN.MENU );
                 }
                 else {

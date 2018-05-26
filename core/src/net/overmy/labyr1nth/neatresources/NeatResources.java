@@ -25,11 +25,14 @@ public final class NeatResources {
     private final static FileHandleResolver resolver = new InternalFileHandleResolver();
     private static       AssetManager       manager  = null;
 
-    private NeatResources() {}
 
-    public static void load() {
+    private NeatResources () {
+    }
+
+
+    public static void load () {
         AssetLoader fontsGenerator = new FreeTypeFontGeneratorLoader( resolver );
-        AssetLoader fontsLoader    = new FreetypeFontLoader( resolver );
+        AssetLoader fontsLoader = new FreetypeFontLoader( resolver );
         //AssetLoader particlesLoader = new ParticleEffectLoader( resolver );
 
         manager = new AssetManager();
@@ -46,7 +49,8 @@ public final class NeatResources {
         SoundTrack.load( manager );
     }
 
-    public static void build() {
+
+    public static void build () {
         manager.finishLoading();
 
         IMG.build( manager );
@@ -55,7 +59,8 @@ public final class NeatResources {
         SoundTrack.build( manager );
     }
 
-    public static void unload() {
+
+    public static void unload () {
         IMG.unload( manager );
         Fonts.unload( manager );
         MusicTrack.unload( manager );
@@ -65,7 +70,8 @@ public final class NeatResources {
         manager.dispose();
     }
 
-    public static AssetManager getManager() {
+
+    public static AssetManager getManager () {
         return manager;
     }
 }

@@ -82,9 +82,7 @@ public class MenuScreen extends Base2DScreen {
     @Override
     public void show() {
 
-        game.ad.show();
         if ( Settings.NotFirstRun.getBoolean() ) {
-            game.gpgs.unlockAchievement( 0 );
         }
 
         stage = new Stage();
@@ -139,7 +137,6 @@ public class MenuScreen extends Base2DScreen {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
                 clickAnimation( acheivesImage );
-                game.gpgs.showAchievements();
                 SoundTrack.CLICK.play();
             }
         } );
@@ -152,7 +149,6 @@ public class MenuScreen extends Base2DScreen {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
                 clickAnimation( leaderboardsImage );
-                game.gpgs.showLeaderboard();
                 SoundTrack.CLICK.play();
             }
         } );
@@ -214,27 +210,13 @@ public class MenuScreen extends Base2DScreen {
         connectToGPGSgroup.addListener( new ClickListener() {
             @Override
             public void clicked( InputEvent event, float x, float y ) {
-                if ( game.gpgs.isConnected() ) {
-                    game.gpgs.signOut();
-                    game.gpgs.disconnect();
-                }
-                else {
-                    game.gpgs.connect();
-                }
+
                 GroupHelper.scaleOut( connectToGPGSgroup );
                 updateConnectToGPGSGroup();
                 SoundTrack.CLICK.play();
             }
         } );
 
-        if ( game.gpgs.isConnected() ) {
-            connectToGPGSgroup.addActor( controllerON );
-            showGPGSstuff();
-        }
-        else {
-            connectToGPGSgroup.addActor( controllerOFF );
-            hideGPGSstuff();
-        }
 
         GroupHelper.scaleIn( connectToGPGSgroup );
     }
@@ -303,7 +285,6 @@ public class MenuScreen extends Base2DScreen {
         GroupHelper.scaleOut( startgroup );
         if ( MyLevel.getCurrent() > 0 ) { GroupHelper.scaleOut( continuegroup ); }
         GroupHelper.scaleOut( soundsgroup );
-        if ( game.gpgs.isConnected() ) { hideGPGSstuff(); }
     }
 
     @Override

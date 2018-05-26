@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "24.0.3"
-    compileSdkVersion 24
+    buildToolsVersion "27.0.1"
+    compileSdkVersion 27
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -16,8 +16,8 @@ android {
     }
     defaultConfig {
         applicationId "net.overmy.labyr1nth"
-        minSdkVersion 9
-        targetSdkVersion 24
+       minSdkVersion 8
+        targetSdkVersion 27
         // minSdkVersion 14 - if using MultiDex
         // multiDexEnabled true
     }
@@ -143,10 +143,4 @@ idea {
     }
 }
 dependencies {
-    // compile 'com.google.android.gms:play-services:9.6.1'
-    // compile 'com.android.support:multidex:1.0.1'
-
-    // https://developers.google.com/android/guides/setup
-    compile 'com.google.android.gms:play-services-ads:9.6.1'
-    compile 'com.google.android.gms:play-services-games:9.6.1'
 }

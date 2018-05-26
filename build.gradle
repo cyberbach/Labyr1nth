@@ -1,9 +1,14 @@
 buildscript {
+
+
     repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 
@@ -14,15 +19,18 @@ allprojects {
     version = '1.0'
     ext {
         appName = "labyrinth-game"
-        gdxVersion = '1.9.3'
-        roboVMVersion = '2.1.0'
+        gdxVersion = '1.9.8'
+        roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
     }
 
     repositories {
-        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
 

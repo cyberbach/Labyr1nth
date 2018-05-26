@@ -12,15 +12,17 @@ public class DesktopLauncher {
     // change this
     static       SCREEN_CFG screenConfig = SCREEN_CFG.SQUARE;
 
-    public static void main( String[] arg ) {
+
+    public static void main ( String[] arg ) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
         config.width = screenConfig.getWidth();
         config.height = screenConfig.getHeight();
         config.title = "" + appName + " [ " + config.width + " x " + config.height + " ]";
 
-        new LwjglApplication( new MyGdxGame( new AdMobImpl(), new GPGSImpl() ), config );
+        new LwjglApplication( new MyGdxGame(), config );
     }
+
 
     enum SCREEN_CFG {
         GALAXY_TAB2( 1024, 554 ),// not 600
@@ -37,16 +39,19 @@ public class DesktopLauncher {
         private final int width;
         private final int height;
 
-        private SCREEN_CFG( final int width, final int height ) {
+
+        private SCREEN_CFG ( final int width, final int height ) {
             this.width = width;
             this.height = height;
         }
 
-        public int getWidth() {
+
+        public int getWidth () {
             return screenOrientation ? width : height;
         }
 
-        public int getHeight() {
+
+        public int getHeight () {
             return screenOrientation ? height : width;
         }
     }
